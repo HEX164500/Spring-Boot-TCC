@@ -4,11 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -27,6 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode( onlyExplicitlyIncluded = true )
 @Table( name = "categorias" )
+@Entity
 public class Categoria {
 	
 	@Id
@@ -37,14 +37,15 @@ public class Categoria {
 
 	@Column( nullable = false )
 	private String nome;
-	private String descricao;
+	private String descricao = "";
 
 	@JsonIgnore
-	@ManyToMany( )
-	@JoinTable(
-			name = "categoria_produto",
-			joinColumns = @JoinColumn( name = "id_categoria"),
-			inverseJoinColumns = @JoinColumn( name = "id_produto"))
+	@ManyToMany( mappedBy = "categorias" )
 	@LazyCollection( LazyCollectionOption.EXTRA )
 	private final Set<Produto> produtos = new HashSet<>();
+	
+	public Categoria( Long id ) {
+		this.id = id;
+	}
+	
 }

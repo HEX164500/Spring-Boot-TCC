@@ -1,5 +1,6 @@
 package com.sigen.api.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +11,8 @@ import com.sigen.api.entities.Produto;
 import lombok.Getter;
 
 @Getter
-public class ProdutoDTO {
+public class ProdutoDTO implements Serializable{
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	private String nome;

@@ -4,12 +4,17 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -27,6 +32,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "produtos")
+@Entity
 public class Produto {
 
 	@Id
@@ -57,16 +63,21 @@ public class Produto {
 	@Column(nullable = false)
 	private String banner = "";
 
-	@CollectionTable()
+	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private final Set<String> imagens = new HashSet<>();
 
-	@ManyToMany(mappedBy = "produtos")
+
 	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "produto_categoria",
+			joinColumns = @JoinColumn(name = "id_produto"),
+			inverseJoinColumns = @JoinColumn(name = "id_categoria"))
 	private final Set<Categoria> categorias = new HashSet<>();
 
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias.addAll(categorias);
+	public void setCategorias(List<Long> categorias) {
+		this.categorias.addAll(categorias.stream().map(id -> new Categoria(id)).collect(Collectors.toList()));
 	}
 
 	public void setImagens(List<String> imagens) {
