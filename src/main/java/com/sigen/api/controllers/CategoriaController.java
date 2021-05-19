@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sigen.api.dto.CategoriaDTO;
-import com.sigen.api.dto.ProdutoDTO;
 import com.sigen.api.entities.Categoria;
 import com.sigen.api.services.CategoriaService;
 
@@ -35,11 +34,6 @@ public class CategoriaController {
 	@GetMapping
 	public ResponseEntity<Page<CategoriaDTO>> findAll(Pageable page) {
 		return ResponseEntity.ok(service.findAll(page));
-	}
-
-	@GetMapping( value = "/{id}/produtos" )
-	public ResponseEntity<Page<ProdutoDTO>> findAllProducts(Long id, Pageable page) {
-		return ResponseEntity.ok(service.findAllProducts(id, page));
 	}
 	
 	@PostMapping

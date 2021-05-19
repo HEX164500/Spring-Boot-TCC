@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sigen.api.dto.ProdutoDTO;
@@ -23,6 +24,8 @@ import com.sigen.api.services.ProdutoService;
 @RequestMapping(value = "/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProdutoController {
 
+	private static final String LONG_MAX = "9223372036854775807";
+
 	@Autowired
 	private ProdutoService service;
 
@@ -32,8 +35,22 @@ public class ProdutoController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<ProdutoDTO>> findAll(Pageable page) {
-		return ResponseEntity.ok(service.findAll(page));
+	public ResponseEntity<Page<ProdutoDTO>> findAllByValorGreaterThanEqualAndValorLessThanEqual(
+			@RequestParam(required = false, defaultValue = "0") Double min,
+			@RequestParam(required = false, defaultValue = LONG_MAX) Double max, Pageable page) {
+
+		return ResponseEntity.ok(service.findAllByValorGreaterThanEqualAndValorLessThanEqual(min, max, page));
+	}
+
+	@GetMapping(value = "/search/{text}")
+	public ResponseEntity<Page<ProdutoDTO>> findAllByNomeLikeOrDescricaoLike(@PathVariable String text, Pageable page) {
+
+		return ResponseEntity.ok(service.findAllByNomeContainingOrDescricaoContaining(text, page));
+	}
+
+	@GetMapping(value = "/categoria/{id}")
+	public ResponseEntity<Page<ProdutoDTO>> findAllByCategorias(@PathVariable Long id, Pageable page) {
+		return ResponseEntity.ok(service.findAllByCategorias(id, page));
 	}
 
 	@PostMapping
