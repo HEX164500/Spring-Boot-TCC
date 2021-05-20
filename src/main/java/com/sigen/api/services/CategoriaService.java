@@ -37,7 +37,7 @@ public class CategoriaService {
 		if (!repository.existsById(id))
 			throw new NotFoundException("Categoria não encontrada");
 		categoria.setId(id);
-		return new CategoriaDTO(repository.save(categoria));
+		return new CategoriaDTO(repository.saveAndFlush(categoria));
 	}
 
 	public void deleteById(Long id) {

@@ -1,6 +1,6 @@
 package com.sigen.api.exceptions;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,12 +22,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ExceptionController {
 
-	//
-
 	private static ObjectMapper serializer = new ObjectMapper();
 
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
+		e.printStackTrace();
 		return createMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
@@ -38,12 +37,14 @@ public class ExceptionController {
 			QueryException.class
 	})
 	public ResponseEntity<String> handleBadRequest(Exception e) {
+		e.printStackTrace();
 		return createMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@Order(Ordered.LOWEST_PRECEDENCE)
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleDefaultError(Exception e) {
+		e.printStackTrace();
 		return createMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
@@ -52,7 +53,7 @@ public class ExceptionController {
 
 		body.put("title", "error");
 		body.put("message", message);
-		body.put("Date", LocalDate.now().toString());
+		body.put("Date", LocalDateTime.now().toString());
 
 		try {
 			return ResponseEntity.status(status).body(serializer.writeValueAsString(body));

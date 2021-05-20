@@ -5,15 +5,14 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -23,27 +22,28 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode( onlyExplicitlyIncluded = true )
-@Table( name = "categorias" )
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "estados")
 @Entity
-public class Categoria {
-	
+public class Estado {
+
 	@Id
-	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonProperty(access = Access.READ_ONLY)
 	@EqualsAndHashCode.Include
-	@JsonProperty( access = Access.READ_ONLY )
 	private Long id;
 
-	@Column( nullable = false )
+	@Column(nullable = false, length = 50)
 	private String nome;
-	private String descricao = "";
 
-	@ManyToMany( mappedBy = "categorias" )
-	@LazyCollection( LazyCollectionOption.EXTRA )
-	private final Set<Produto> produtos = new HashSet<>();
-	
-	public Categoria( Long id ) {
+	@Column(nullable = false, length = 5, unique = true)
+	private String sigla;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "estado", fetch = FetchType.EAGER)
+	private final Set<Cidade> cidades = new HashSet<>();
+
+	public Estado(Long id) {
 		this.id = id;
 	}
-	
 }

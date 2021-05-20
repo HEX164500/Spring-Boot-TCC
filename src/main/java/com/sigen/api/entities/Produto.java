@@ -18,9 +18,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -63,12 +60,10 @@ public class Produto {
 	@Column(nullable = false)
 	private String banner = "";
 
-	@ElementCollection
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@ElementCollection(fetch = FetchType.EAGER)
 	private final Set<String> imagens = new HashSet<>();
 
 
-	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "produto_categoria",

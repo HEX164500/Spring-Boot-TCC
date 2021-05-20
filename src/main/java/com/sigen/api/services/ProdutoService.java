@@ -50,7 +50,7 @@ public class ProdutoService {
 		if (!repository.existsById(id))
 			throw new NotFoundException("Produto não encontrado");
 		produto.setId(id);
-		Produto prod = repository.save(produto);
+		Produto prod = repository.saveAndFlush(produto);
 		return new ProdutoDTO(repository.findById(prod.getId()).orElse(null));
 	}
 
