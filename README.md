@@ -3,7 +3,10 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 
 > # Documentação de Endpoins da API
 > 1. [Produto](#produto)
-> 1. [Categoria](#categoria)
+> 2. [Categoria](#categoria)
+> 3. [Estado](#estado)
+> 4. [Cidade](#cidade)
+> 5. [Endereço](#endereco)
 
 <br /><br /><br /><br />
 
@@ -64,6 +67,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /produtos
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Produto a ser salvo
+>> <br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Produto criado
 >> <br /><br />
 >> 
@@ -71,7 +75,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> ### Apagar por id
 >> [ DELETE ]  : /produtos/{id} - inteiro positivo
 >> <br /><br />
->> RESPOSTA : 204 - Produto
+>> RESPOSTA : 204
 >> <br /><br />
 >> 
 >> 
@@ -79,6 +83,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ PATCH ]  : /produtos/{id} - inteiro positivo, id do produto a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Produto completo a ser alterado
+>> <br />
 >> RESPOSTA : 200 - Produto
 >> <br /><br />
 >> [Voltar ao topo](#topo)
@@ -115,6 +120,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /categorias
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : A Categoria a ser salva
+>> <br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - A Categoria criada
 >> <br /><br />
 >> 
@@ -122,7 +128,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> ### Apagar por id
 >> [ DELETE ]  : /categorias/{id} - inteiro positivo
 >> <br /><br />
->> RESPOSTA : 204 - Categoria
+>> RESPOSTA : 204
 >> <br /><br />
 >> 
 >> 
@@ -130,7 +136,148 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ PATCH ]  : /categorias/{id} - inteiro positivo, id da categoria a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : A Categoria completo a ser alterado
+>> <br />
 >> RESPOSTA : 200 - Categoria
 >> <br /><br />
 >> [Voltar ao topo](#topo)
 
+<br /><br /><br /><br />
+
+
+> ## <a name="estado">Estado</a>
+> #####  [Voltar ao topo](#topo)
+>> ### Estrutura JSON
+>> ##### Campos marcados com ' * ' são obrigatórios em POST e PATCH
+>> ``` JSON
+>>	{
+>>		"id": 1,
+>>		"nome": "São Paulo", *
+>>		"sigla": "SP", *
+>>		"cidades": []
+>>	}
+>> ```
+>> ### Busca paginada
+>> [ GET ]  : /estados?page=0&size=100&sort=nome,desc
+>> <br /><br />
+>> RESPOSTA : 200 - Pagina contendo os estados
+>> <br /><br />
+>> 
+>> 
+>> ### Salvar
+>> [ POST ]  : /estados
+>> <br /><br />
+>> CORPO DA REQUISIÇÃO    : O Estado a ser salvo
+>> <br />
+>> RESPOSTA DA SOLICITAÇÃO: 201 - O Estado criado
+>> <br /><br />
+>> 
+>> 
+>> ### Apagar por id
+>> [ DELETE ]  : /estados/{id} - inteiro positivo
+>> <br /><br />
+>> RESPOSTA : 204
+>> <br /><br />
+>> 
+>> 
+>> ### Modificar
+>> [ PATCH ]  : /categorias/{id} - inteiro positivo, id da categoria a ser alterado
+>> <br /><br />
+>> CORPO DA REQUISIÇÃO    : O Estado completo a ser alterado
+>> <br />
+>> RESPOSTA : 200 - Estado
+>> <br /><br />
+>> [Voltar ao topo](#topo)
+
+<br /><br /><br /><br />
+
+
+> ## <a name="cidade">Cidade</a>
+> #####  [Voltar ao topo](#topo)
+>> ### Estrutura JSON
+>> ##### Campos marcados com ' * ' são obrigatórios em POST e PATCH
+>> ``` JSON
+>>	{
+>>	    "id": 1,
+>>	    "nome": "Limeira", *
+>>	    "estado": 1 *
+>>	}
+>> ```
+>> ### Salvar
+>> [ POST ]  : /cidades
+>> <br /><br />
+>> CORPO DA REQUISIÇÃO    : A cidade a ser salva
+>> <br />
+>> RESPOSTA DA SOLICITAÇÃO: 201 - A cidade criada
+>> <br /><br />
+>> 
+>> 
+>> ### Apagar por id
+>> [ DELETE ]  : /cidades/{id} - inteiro positivo
+>> <br /><br />
+>> RESPOSTA : 204
+>> <br /><br />
+>> 
+>> 
+>> ### Modificar
+>> [ PATCH ]  : /cidades/{id} - inteiro positivo, id da cidade a ser alterado
+>> <br /><br />
+>> CORPO DA REQUISIÇÃO    : A cidade a ser alterado
+>> <br />
+>> RESPOSTA : 200 - Cidade
+>> <br /><br />
+>> [Voltar ao topo](#topo)
+
+<br /><br /><br /><br />
+
+
+> ## <a name="endereco">Endereço</a>
+> #####  [Voltar ao topo](#topo)
+>> ### Estrutura JSON
+>> ##### Campos marcados com ' * ' são obrigatórios em POST e PATCH
+>> ``` JSON
+>>	{
+>>		"id": 1,
+>>     "apelido": "Casa", *
+>>     "cep": "12345678", *
+>>     "rua": "rua dos sabias", *
+>>     "numero": "22", *
+>>     "complemento": "", *
+>>     "bairro": "Jardim das flores", *
+>>     "cidade": {
+>>         "id": 1,
+>>         "nome": "Limeira",
+>>         "estado": 1
+>>     }
+>>}
+>> ```
+>> ### Busca por id
+>> [ GET ]  : /enderecos/{id} - inteiro positivo
+>> <br /><br />
+>> RESPOSTA : 200 - Pagina contendo os endereços
+>> <br /><br />
+>> 
+>> 
+>> ### Salvar
+>> [ POST ]  : /enderecos
+>> <br /><br />
+>> CORPO DA REQUISIÇÃO    : O Endereço a ser salvo
+>> <br />
+>> RESPOSTA DA SOLICITAÇÃO: 201 - O Endereço criado
+>> <br /><br />
+>> 
+>> 
+>> ### Apagar por id
+>> [ DELETE ]  : /enderecos/{id} - inteiro positivo
+>> <br /><br />
+>> RESPOSTA : 204
+>> <br /><br />
+>> 
+>> 
+>> ### Modificar
+>> [ PATCH ]  : /enderecos/{id} - inteiro positivo, id do endereço a ser alterado
+>> <br /><br />
+>> CORPO DA REQUISIÇÃO    : O Endereço completo a ser alterado
+>> <br />
+>> RESPOSTA : 200 - Endereço
+>> <br /><br />
+>> [Voltar ao topo](#topo)
