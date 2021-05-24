@@ -478,21 +478,21 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> ##### Campos marcados com ' * ' são obrigatórios
 >> ``` JSON
 >>{
-    "id": 1,
-    "nome": "João",
-    "email": "email@email.com",
-    "cpf": "12345678901",
-    "acesso": "EMPREGADO",
-    "genero": "HOMEM",
-    "telefones": "2021-05-18",
-    "ativo": true,
-    "registro": "2021-05-18",
-    "nascimento": "2021-05-18",
-    "funcao": "Programador",
-    "salario": 0.0,
-    "admissao": "2021-05-18",
-    "departamento": <Departamento>
-}
+>>  "id": 1,
+>>  "nome": "João",
+>>  "email": "email@email.com",
+>>  "cpf": "12345678901",
+>>  "acesso": "EMPREGADO",
+>>  "genero": "HOMEM",
+>>  "telefones": "2021-05-18",
+>>  "ativo": true,
+>>  "registro": "2021-05-18",
+>>  "nascimento": "2021-05-18",
+>>  "funcao": "Programador",
+>>  "salario": 0.0,
+>>  "admissao": "2021-05-18",
+>>  "departamento": <Departamento>
+>>}
 >> ```
 >> ### Busca paginada
 >> [ GET ]  : /funcionarios?page=0&size=100&sort=nome,desc
