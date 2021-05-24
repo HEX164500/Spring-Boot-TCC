@@ -42,7 +42,7 @@ public class Estado {
 	@JsonIgnore
 	@OneToMany(mappedBy = "estado", fetch = FetchType.EAGER)
 	private final Set<Cidade> cidades = new HashSet<>();
-
+	
 	public Estado(Long id) {
 		this.id = id;
 	}

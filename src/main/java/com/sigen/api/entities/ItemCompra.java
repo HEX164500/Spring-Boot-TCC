@@ -2,7 +2,6 @@ package com.sigen.api.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,26 +17,33 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "cidades")
+@NoArgsConstructor
 @Entity
-public class Cidade {
+@Table(name = "item_compras")
+public class ItemCompra {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty(access = Access.READ_ONLY)
 	@EqualsAndHashCode.Include
+	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
-
-	@Column(nullable = false, length = 80)
-	private String nome;
-
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_estado")
-	private Estado estado;
 	
-	public Cidade(Long id) {
-		this.id = id;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "id_compra", updatable = false)
+	@JsonProperty( access = Access.READ_ONLY )
+	private Compra compra;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "id_produto", updatable = false)
+	private Produto produto;
+	
+	@Column(nullable = false, updatable = false)
+	private Integer quantidade;
+	
+	public void setQuantidade(Integer quantidade) {
+		if ( quantidade < 1)
+			throw new IllegalArgumentException("Quantidade deve ser maior ou igual que 1");
+		this.quantidade = quantidade;
 	}
 }

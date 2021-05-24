@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -47,7 +46,7 @@ public class Produto {
 	private Double valor;
 
 	@JsonProperty(access = Access.READ_ONLY)
-	private final LocalDate cadastro = LocalDate.now();
+	private LocalDate cadastro = LocalDate.now();
 
 	private Double peso = 0.0;
 
@@ -71,8 +70,12 @@ public class Produto {
 			inverseJoinColumns = @JoinColumn(name = "id_categoria"))
 	private final Set<Categoria> categorias = new HashSet<>();
 
-	public void setCategorias(List<Long> categorias) {
-		this.categorias.addAll(categorias.stream().map(id -> new Categoria(id)).collect(Collectors.toList()));
+	public Produto(Long id) {
+		this.id = id;
+	}
+	
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias.addAll(categorias);
 	}
 
 	public void setImagens(List<String> imagens) {

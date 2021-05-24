@@ -51,11 +51,10 @@ public class Endereco {
 	@JoinColumn(name = "id_cidade", updatable = false)
 	private Cidade cidade;
 
-	@JsonProperty("cidade")
-	public void setCidade(Long id) {
-		cidade = new Cidade(id);
+	public Endereco(Long id) {
+		this.id = id;
 	}
-
+	
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
 	}

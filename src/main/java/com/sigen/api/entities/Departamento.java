@@ -1,18 +1,13 @@
 package com.sigen.api.entities;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -24,9 +19,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "categorias")
+@Table(name = "departamentos")
 @Entity
-public class Categoria {
+public class Departamento {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,16 +29,17 @@ public class Categoria {
 	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = true, length = 80)
 	private String nome;
-	private String descricao = "";
 
-	@ManyToMany(mappedBy = "categorias")
-	@LazyCollection(LazyCollectionOption.EXTRA)
-	private final Set<Produto> produtos = new HashSet<>();
-	
-	public Categoria(Long id) {
+	@Column(nullable = true, length = 156)
+	private String descricao;
+
+	@OneToOne
+	@JoinColumn(name = "id_funcionario")
+	private Funcionario gerente;
+
+	public Departamento(Long id) {
 		this.id = id;
 	}
-
 }

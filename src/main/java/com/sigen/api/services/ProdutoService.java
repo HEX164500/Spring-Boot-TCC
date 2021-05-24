@@ -38,7 +38,9 @@ public class ProdutoService {
 
 	@Transactional(readOnly = true)
 	public Page<ProdutoDTO> findAllByCategorias(Long id, Pageable page) {
-		return repository.findAllByCategorias(new Categoria(id), page).map(produto -> new ProdutoDTO(produto));
+		Categoria categoria = new Categoria();
+		categoria.setId(id);
+		return repository.findAllByCategorias(categoria, page).map(produto -> new ProdutoDTO(produto));
 	}
 
 	public ProdutoDTO save(Produto produto) {

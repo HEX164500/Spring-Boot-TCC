@@ -9,11 +9,14 @@ import org.hibernate.QueryException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,15 +33,26 @@ public class ExceptionController {
 		return createMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(value = { 
-			HttpMessageNotReadableException.class,
-			ConstraintViolationException.class,
-			PropertyValueException.class,
-			QueryException.class
-	})
+	@ExceptionHandler(value = { HttpMessageNotReadableException.class, PropertyValueException.class,
+			QueryException.class })
 	public ResponseEntity<String> handleBadRequest(Exception e) {
 		e.printStackTrace();
 		return createMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(NoHandlerFoundException.class)
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	public ResponseEntity<String> handleNoHandlerFoundException(NoHandlerFoundException e) {
+		e.printStackTrace();
+		return createMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler({ ConstraintViolationException.class, DataIntegrityViolationException.class })
+	@ResponseStatus(code = HttpStatus.NOT_FOUND)
+	public ResponseEntity<String> handleJdbcSQLIntegrityConstraintViolationException(Exception e) {
+		e.printStackTrace();
+		return createMessage("Erro ao processar sua requisição, verifique os dados e tente novamente",
+				HttpStatus.BAD_REQUEST);
 	}
 
 	@Order(Ordered.LOWEST_PRECEDENCE)
