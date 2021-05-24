@@ -1,7 +1,6 @@
 package com.sigen.api.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,8 +22,8 @@ public class UsuarioDTO implements Serializable {
 	private Genero genero;
 	private Set<String> telefones;
 	private Boolean ativo;
-	private LocalDate registro;
-	private LocalDate nascimento;
+	private String registro;
+	private String nascimento;
 
 	public UsuarioDTO(Usuario usuario) {
 		id = usuario.getId();
@@ -35,7 +34,7 @@ public class UsuarioDTO implements Serializable {
 		genero = usuario.getGenero();
 		telefones = new HashSet<>(usuario.getTelefones());
 		ativo = usuario.isAtivo();
-		registro = usuario.getRegistro();
-		nascimento = usuario.getNascimento();
+		registro = usuario.getRegistro().toString();
+		nascimento = usuario.getNascimento().toString();
 	}
 }

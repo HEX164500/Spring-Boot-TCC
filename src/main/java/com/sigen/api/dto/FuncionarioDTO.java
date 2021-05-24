@@ -1,7 +1,6 @@
 package com.sigen.api.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sigen.api.entities.Funcionario;
@@ -14,7 +13,7 @@ public class FuncionarioDTO extends UsuarioDTO implements Serializable {
 
 	private String funcao;
 	private Double salario;
-	private LocalDate admissao;
+	private String admissao;
 
 	@JsonManagedReference
 	private DepartamentoDTO departamento;
@@ -23,7 +22,7 @@ public class FuncionarioDTO extends UsuarioDTO implements Serializable {
 		super(funcionario);
 		funcao = funcionario.getFuncao();
 		salario = funcionario.getSalario();
-		admissao = funcionario.getAdmissao();
+		admissao = funcionario.getAdmissao().toString();
 		departamento = new DepartamentoDTO(funcionario.getDepartamento());
 	}
 }

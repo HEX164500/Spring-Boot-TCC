@@ -37,7 +37,7 @@ public class CompraController {
 
 	@GetMapping(value = "/usuario/{id}")
 	public ResponseEntity<Page<CompraDTO>> findAllByUsuario(@PathVariable Long id,
-			@RequestParam(defaultValue = "COMPLETO") EstadoPagamento estado, Pageable page) {
+			@RequestParam(defaultValue = "PENDENTE") EstadoPagamento estado, Pageable page) {
 		return ResponseEntity.ok(service.findAllByUsuarioAndEstado(id, estado, page));
 	}
 

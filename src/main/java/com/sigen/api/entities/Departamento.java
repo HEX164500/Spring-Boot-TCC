@@ -29,10 +29,10 @@ public class Departamento {
 	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
 
-	@Column(nullable = true, length = 80)
+	@Column(nullable = false, length = 80)
 	private String nome;
 
-	@Column(nullable = true, length = 156)
+	@Column(length = 156)
 	private String descricao;
 
 	@OneToOne
