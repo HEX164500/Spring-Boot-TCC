@@ -19,11 +19,16 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	@Transactional(readOnly = true)
 	Optional<Usuario> findByCpf(String cpf);
-	
+
 	Optional<Usuario> findByIdOrCpf(Long id, String cpf);
-	
+
 	@Modifying(clearAutomatically = true)
 	@Transactional(readOnly = false)
 	@Query("UPDATE Usuario u SET u.ativo = :ativo WHERE u.id = :id")
 	int updateAtivoById(@Param("ativo") Boolean ativo, @Param("id") Long id);
+
+	@Modifying(clearAutomatically = true)
+	@Transactional(readOnly = false)
+	@Query("UPDATE Usuario u SET u.senha = :senha WHERE u.id = :id")
+	void updateSenhaById(@Param("id") Long id, @Param("senha") String senha);
 }

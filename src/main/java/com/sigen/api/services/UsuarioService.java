@@ -6,15 +6,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sigen.api.dto.UsuarioDTO;
 import com.sigen.api.entities.Usuario;
-import com.sigen.api.enums.AccessLevel;
 import com.sigen.api.exceptions.NotFoundException;
 import com.sigen.api.repositories.UsuarioRepository;
+import com.sigen.api.services.mail.MailService;
+import com.sigen.api.services.token.TokenBuilder;
+import com.sigen.api.services.token.TokenUsuario;
 
 @Service
 public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository repository;
+
+	@Autowired
+	private MailService mailService;
 
 	@Transactional(readOnly = true)
 	public UsuarioDTO findByIdOrCpf(Long id, String cpf) {
@@ -25,7 +30,11 @@ public class UsuarioService {
 
 	public UsuarioDTO save(Usuario usuario) {
 
-		return new UsuarioDTO(repository.save(usuario));
+		Usuario usr = repository.save(usuario);
+
+		mailService.sendActivationToken(usr);
+
+		return new UsuarioDTO(usr);
 	}
 
 	public UsuarioDTO patch(Long id, Usuario usuario) {
@@ -35,23 +44,30 @@ public class UsuarioService {
 		return new UsuarioDTO(repository.saveAndFlush(usuario));
 	}
 
-	public void desativarConta(Long id) {
-		if (!repository.existsById(id))
-			new NotFoundException("Usuario não encontrado");
-		repository.updateAtivoById(false, id);
+	public void ativarContaPorToken(String data) {
+		TokenUsuario token = TokenBuilder.decode(data);
+		Usuario usuario = repository.findByIdOrCpf(token.getId(), "")
+				.orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
+		usuario.setAtivo(true);
+		repository.save(usuario);
 	}
 
-	public void ativarConta(Long id) {
-		if (!repository.existsById(id))
-			new NotFoundException("Usuario não encontrado");
-		repository.updateAtivoById(true, id);
-	}
+	public void alterarSenha(Long id, String nova, String antiga) {
 
-	public void alterarNivelDeAcesso(Long id, AccessLevel level) {
-		throw new Error("Não implementado");
-		/*if (!repository.existsById(id))
-			new NotFoundException("Usuario não encontrado");
-		repository.updateAtivoById(true, id);
-		*/
+		if (nova == null || antiga == null)
+			throw new IllegalArgumentException("Senhas não podem ser vazias");
+
+		if (nova.equals(antiga))
+			throw new IllegalArgumentException("Senhas não podem ser iguais");
+
+		Usuario usuario = repository.findById(id).orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
+		
+		if (!usuario.getSenha().equals(antiga))
+			throw new IllegalArgumentException("Senha atual invalida");
+
+		usuario.setSenha(nova);
+		
+		repository.updateSenhaById(id, usuario.getSenha());
+		repository.save(usuario);
 	}
 }

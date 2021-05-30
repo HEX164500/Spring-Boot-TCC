@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.sigen.api.entities.Usuario;
-import com.sigen.api.enums.AccessLevel;
+import com.sigen.api.enums.NivelDeAcesso;
 import com.sigen.api.enums.Genero;
 
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class UsuarioDTO implements Serializable {
 	private String nome;
 	private String email;
 	private String cpf;
-	private AccessLevel acesso;
+	private NivelDeAcesso acesso;
 	private Genero genero;
 	private Set<String> telefones;
 	private Boolean ativo;

@@ -20,8 +20,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.sigen.api.enums.AccessLevel;
 import com.sigen.api.enums.Genero;
+import com.sigen.api.enums.NivelDeAcesso;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,16 +46,16 @@ public class Usuario {
 	@Column(nullable = false, length = 32, updatable = false)
 	private String senha;
 
-	@Column(nullable = false, length = 126, unique = true)
+	@Column(nullable = false, length = 126, unique = true, updatable = false)
 	private String email;
 
-	@Column(nullable = false, length = 11, unique = true)
+	@Column(nullable = false, length = 11)
 	private String cpf;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	@JsonProperty(access = Access.READ_ONLY)
-	private AccessLevel acesso = AccessLevel.USUARIO;
+	private NivelDeAcesso acesso = NivelDeAcesso.USUARIO;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
@@ -74,7 +74,7 @@ public class Usuario {
 	@Column(nullable = false)
 	private LocalDate nascimento;
 
-	public void setPassword(String senha) {
+	public void setSenha(String senha) {
 		if (senha.length() < 8 || senha.length() > 32)
 			throw new IllegalArgumentException("Senha deve ter entre 8 e 32 caracteres");
 		this.senha = senha;

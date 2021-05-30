@@ -13,7 +13,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.sigen.api.entities.Usuario;
-import com.sigen.api.enums.AccessLevel;
+import com.sigen.api.enums.NivelDeAcesso;
 import com.sigen.api.enums.Genero;
 import com.sigen.api.repositories.UsuarioRepository;
 
@@ -36,9 +36,9 @@ public class ApiApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Usuario root = new Usuario();
 		root.setNome("Lucas");
-		root.setEmail("lucas.rafael.164500@gmail.com");
+		root.setEmail("lucas@gmail.com");
 		root.setSenha("password");
-		root.setAcesso(AccessLevel.ADIMISTRADOR);
+		root.setAcesso(NivelDeAcesso.ADIMISTRADOR);
 		root.setGenero(Genero.HOMEM);
 		root.setAtivo(true);
 		root.setNascimento(LocalDate.now());

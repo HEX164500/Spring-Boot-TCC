@@ -1,5 +1,7 @@
 package com.sigen.api.controllers;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,14 +30,23 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioDTO> findByIdOrCpf(@RequestParam(defaultValue = "-1") Long id,
 			@RequestParam(defaultValue = "-1") String cpf) {
 
+		System.out.println(id);
+		System.out.println(cpf);
+		
 		if (cpf.equals("-1") && id == -1)
 			throw new IllegalArgumentException("Deve ser fornecido ao menos um parametro para busca");
-		
-		if(!(cpf.equals("-1") && id == -1)) {
+
+		if (!cpf.equals("-1") && id != -1) {
 			throw new IllegalArgumentException("Deve ser fornecido somente um parametro para busca");
 		}
 
 		return ResponseEntity.ok(service.findByIdOrCpf(id, cpf));
+	}
+
+	@GetMapping(value = "/ativar/token/{token}")
+	public ResponseEntity<UsuarioDTO> ativarContaPorToken(@PathVariable String token) {
+		service.ativarContaPorToken(token);
+		return new ResponseEntity<UsuarioDTO>(HttpStatus.NO_CONTENT);
 	}
 
 	@PostMapping
@@ -48,15 +59,14 @@ public class UsuarioController {
 		return ResponseEntity.ok(service.patch(id, usuario));
 	}
 
-	@PatchMapping(value = "/ativar/{id}")
-	public ResponseEntity<UsuarioDTO> ativarConta(@PathVariable Long id) {
-		service.ativarConta(id);
-		return new ResponseEntity<UsuarioDTO>(HttpStatus.NO_CONTENT);
-	}
+	@PatchMapping(value = "/alterarsenha/{id}")
+	public ResponseEntity<UsuarioDTO> patch(@PathVariable Long id, @RequestBody Map<String, String> corpo) {
 
-	@PatchMapping(value = "/desativar/{id}")
-	public ResponseEntity<UsuarioDTO> desativarConta(@PathVariable Long id) {
-		service.desativarConta(id);
+		String nova = corpo.get("nova");
+		String antiga = corpo.get("antiga");
+
+		service.alterarSenha(id, nova, antiga);
+
 		return new ResponseEntity<UsuarioDTO>(HttpStatus.NO_CONTENT);
 	}
 }
