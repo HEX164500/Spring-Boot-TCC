@@ -1,9 +1,12 @@
 package com.sigen.api.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +20,7 @@ import com.sigen.api.dto.EnderecoDTO;
 import com.sigen.api.entities.Endereco;
 import com.sigen.api.services.EnderecoService;
 
+@PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping(value = "/enderecos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EnderecoController {
@@ -24,9 +28,10 @@ public class EnderecoController {
 	@Autowired
 	private EnderecoService service;
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<EnderecoDTO> findById(@PathVariable Long id) {
-		return ResponseEntity.ok(service.findById(id));
+	@PreAuthorize("hasAnyAuthority('USUARIO', #id)")
+	@GetMapping(value = "/usuario/{id}")
+	public ResponseEntity<Page<EnderecoDTO>> findAllByUsuario(@PathVariable Long id, Pageable page) {
+		return ResponseEntity.ok(service.findAllByUsuario(id, page));
 	}
 
 	@PostMapping

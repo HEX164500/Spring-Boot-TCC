@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,6 +21,7 @@ import com.sigen.api.dto.ProdutoDTO;
 import com.sigen.api.entities.Produto;
 import com.sigen.api.services.ProdutoService;
 
+@PreAuthorize("permitAll()")
 @RestController
 @RequestMapping(value = "/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProdutoController {
@@ -53,16 +55,19 @@ public class ProdutoController {
 		return ResponseEntity.ok(service.findAllByCategorias(id, page));
 	}
 
+	@PreAuthorize("hasAuthority('EMPREGADO')")
 	@PostMapping
 	public ResponseEntity<ProdutoDTO> save(@RequestBody Produto produto) {
 		return new ResponseEntity<ProdutoDTO>(service.save(produto), HttpStatus.CREATED);
 	}
 
+	@PreAuthorize("hasAuthority('EMPREGADO')")
 	@PatchMapping(value = "/{id}")
 	public ResponseEntity<ProdutoDTO> patch(@PathVariable Long id, @RequestBody Produto produto) {
 		return ResponseEntity.ok(service.patch(id, produto));
 	}
 
+	@PreAuthorize("hasAuthority('EMPREGADO')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<ProdutoDTO> deleteById(@PathVariable Long id) {
 		service.deleteById(id);

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,7 @@ import com.sigen.api.dto.CategoriaDTO;
 import com.sigen.api.entities.Categoria;
 import com.sigen.api.services.CategoriaService;
 
+@PreAuthorize("permitAll()")
 @RestController
 @RequestMapping(value = "/categorias", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoriaController {
@@ -35,17 +37,20 @@ public class CategoriaController {
 	public ResponseEntity<Page<CategoriaDTO>> findAll(Pageable page) {
 		return ResponseEntity.ok(service.findAll(page));
 	}
-	
+
+	@PreAuthorize("hasAuthority('EMPREGADO')")
 	@PostMapping
 	public ResponseEntity<CategoriaDTO> save(@RequestBody Categoria categoria) {
 		return new ResponseEntity<CategoriaDTO>(service.save(categoria), HttpStatus.CREATED);
 	}
 
+	@PreAuthorize("hasAuthority('EMPREGADO')")
 	@PatchMapping(value = "/{id}")
 	public ResponseEntity<CategoriaDTO> patch(@PathVariable Long id, @RequestBody Categoria categoria) {
 		return ResponseEntity.ok(service.patch(id, categoria));
 	}
 
+	@PreAuthorize("hasAuthority('EMPREGADO')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<CategoriaDTO> deleteById(@PathVariable Long id) {
 		service.deleteById(id);

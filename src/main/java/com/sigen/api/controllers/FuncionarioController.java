@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,7 @@ import com.sigen.api.dto.FuncionarioDTO;
 import com.sigen.api.entities.Funcionario;
 import com.sigen.api.services.FuncionarioService;
 
+@PreAuthorize("hasAuthority('EMPREGADO')")
 @RestController
 @RequestMapping(value = "/funcionarios", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FuncionarioController {
@@ -46,6 +48,7 @@ public class FuncionarioController {
 		return new ResponseEntity<FuncionarioDTO>(service.save(funcionario), HttpStatus.CREATED);
 	}
 
+	@PreAuthorize("hasAnyAuthority('EMPREGADO')")
 	@PatchMapping(value = "/{id}")
 	public ResponseEntity<FuncionarioDTO> patch(@PathVariable Long id, @RequestBody Funcionario funcionario) {
 		return ResponseEntity.ok(service.patch(id, funcionario));

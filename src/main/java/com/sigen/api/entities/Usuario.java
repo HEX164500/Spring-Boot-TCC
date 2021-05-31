@@ -74,6 +74,10 @@ public class Usuario {
 	@Column(nullable = false)
 	private LocalDate nascimento;
 
+	public Usuario(Long id) {
+		this.id = id;
+	}
+
 	public void setSenha(String senha) {
 		if (senha.length() < 8 || senha.length() > 32)
 			throw new IllegalArgumentException("Senha deve ter entre 8 e 32 caracteres");

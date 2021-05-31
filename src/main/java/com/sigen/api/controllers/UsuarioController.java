@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.sigen.api.dto.UsuarioDTO;
 import com.sigen.api.entities.Usuario;
 import com.sigen.api.services.UsuarioService;
 
+@PreAuthorize("permitAll()")
 @RestController
 @RequestMapping(value = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UsuarioController {
@@ -26,13 +28,14 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService service;
 
+	@PreAuthorize("hasAnyAuthority('EMPREGADO', #id, #cpf)")
 	@GetMapping(value = "/search")
 	public ResponseEntity<UsuarioDTO> findByIdOrCpf(@RequestParam(defaultValue = "-1") Long id,
 			@RequestParam(defaultValue = "-1") String cpf) {
 
 		System.out.println(id);
 		System.out.println(cpf);
-		
+
 		if (cpf.equals("-1") && id == -1)
 			throw new IllegalArgumentException("Deve ser fornecido ao menos um parametro para busca");
 
@@ -54,11 +57,13 @@ public class UsuarioController {
 		return new ResponseEntity<UsuarioDTO>(service.save(usuario), HttpStatus.CREATED);
 	}
 
+	@PreAuthorize("hasAuthority('EMPREGADO', #id)")
 	@PatchMapping(value = "/{id}")
 	public ResponseEntity<UsuarioDTO> patch(@PathVariable Long id, @RequestBody Usuario usuario) {
 		return ResponseEntity.ok(service.patch(id, usuario));
 	}
 
+	@PreAuthorize("hasAuthority('EMPREGADO', #id)")
 	@PatchMapping(value = "/alterarsenha/{id}")
 	public ResponseEntity<UsuarioDTO> patch(@PathVariable Long id, @RequestBody Map<String, String> corpo) {
 

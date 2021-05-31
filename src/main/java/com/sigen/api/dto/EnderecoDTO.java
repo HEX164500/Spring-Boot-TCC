@@ -18,6 +18,7 @@ public class EnderecoDTO implements Serializable {
 	private String complemento;
 	private String bairro;
 	private CidadeDTO cidade;
+	private UsuarioDTO usuario;
 
 	public EnderecoDTO(Endereco endereco) {
 		id = endereco.getId();
@@ -28,5 +29,6 @@ public class EnderecoDTO implements Serializable {
 		complemento = endereco.getComplemento();
 		bairro = endereco.getBairro();
 		cidade = new CidadeDTO(endereco.getCidade());
+		usuario = new UsuarioDTO(endereco.getUsuario());
 	}
 }

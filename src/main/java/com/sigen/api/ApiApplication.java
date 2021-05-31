@@ -38,7 +38,7 @@ public class ApiApplication implements CommandLineRunner {
 		root.setNome("Lucas");
 		root.setEmail("lucas@gmail.com");
 		root.setSenha("password");
-		root.setAcesso(NivelDeAcesso.ADIMISTRADOR);
+		root.setAcesso(NivelDeAcesso.EMPREGADO);
 		root.setGenero(Genero.HOMEM);
 		root.setAtivo(true);
 		root.setNascimento(LocalDate.now());

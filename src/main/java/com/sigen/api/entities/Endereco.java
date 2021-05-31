@@ -51,6 +51,10 @@ public class Endereco {
 	@JoinColumn(name = "id_cidade", updatable = false)
 	private Cidade cidade;
 
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_usuario", updatable = false)
+	private Usuario usuario;
+
 	public Endereco(Long id) {
 		this.id = id;
 	}

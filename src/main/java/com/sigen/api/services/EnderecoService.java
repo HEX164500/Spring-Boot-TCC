@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sigen.api.dto.EnderecoDTO;
 import com.sigen.api.entities.Endereco;
+import com.sigen.api.entities.Usuario;
 import com.sigen.api.exceptions.NotFoundException;
 import com.sigen.api.repositories.EnderecoRepository;
 
@@ -18,14 +19,11 @@ public class EnderecoService {
 	private EnderecoRepository repository;
 
 	@Transactional(readOnly = true)
-	public EnderecoDTO findById(Long id) {
-		Endereco endereco = repository.findById(id).orElseThrow(() -> new NotFoundException("Endereço não encontrado"));
-		return new EnderecoDTO(endereco);
-	}
+	public Page<EnderecoDTO> findAllByUsuario(Long id, Pageable page) {
 
-	@Transactional(readOnly = true)
-	public Page<EnderecoDTO> findAll(Pageable page) {
-		return repository.findAll(page).map(endereco -> new EnderecoDTO(endereco));
+		Usuario usuario = new Usuario(id);
+
+		return repository.findAllByUsuario(usuario, page).map(endereco -> new EnderecoDTO(endereco));
 	}
 
 	public EnderecoDTO save(Endereco endereco) {
