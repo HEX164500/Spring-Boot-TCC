@@ -30,28 +30,28 @@ public class ExceptionController {
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
 		e.printStackTrace();
-		return createMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+		return createResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(value = { HttpMessageNotReadableException.class, PropertyValueException.class,
 			QueryException.class })
 	public ResponseEntity<String> handleBadRequest(Exception e) {
 		e.printStackTrace();
-		return createMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
+		return createResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public ResponseEntity<String> handleNoHandlerFoundException(NoHandlerFoundException e) {
 		e.printStackTrace();
-		return createMessage(e.getMessage(), HttpStatus.NOT_FOUND);
+		return createResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler({ ConstraintViolationException.class, DataIntegrityViolationException.class })
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public ResponseEntity<String> handleJdbcSQLIntegrityConstraintViolationException(Exception e) {
 		e.printStackTrace();
-		return createMessage("Erro ao processar sua requisição, verifique os dados e tente novamente",
+		return createResponseMessage("Erro ao processar sua requisição, verifique os dados e tente novamente",
 				HttpStatus.BAD_REQUEST);
 	}
 
@@ -59,10 +59,14 @@ public class ExceptionController {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleDefaultError(Exception e) {
 		e.printStackTrace();
-		return createMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		return createResponseMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	private static ResponseEntity<String> createMessage(String message, HttpStatus status) {
+	private static ResponseEntity<String> createResponseMessage(String message, HttpStatus status) {
+		return ResponseEntity.status(status).body(createSimpleJsonMessage(message));
+	}
+
+	public static String createSimpleJsonMessage(String message) {
 		Map<String, String> body = new HashMap<>(3);
 
 		body.put("title", "error");
@@ -70,10 +74,9 @@ public class ExceptionController {
 		body.put("Date", LocalDateTime.now().toString());
 
 		try {
-			return ResponseEntity.status(status).body(serializer.writeValueAsString(body));
+			return serializer.writeValueAsString(body);
 		} catch (JsonProcessingException e1) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("{\"message\":\"Erro ao processar resposta\"");
+			return "{\"message\":\"Erro ao processar resposta\"";
 		}
 	}
 }

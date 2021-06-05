@@ -1,6 +1,10 @@
 # <a name="topo">Spring-Boot-TCC</a>
 API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Técnico de Limeira
 
+# Autenticação
+### Alguns endpoints requerem autenticação do tipo HTTP Basic ou serão negados
+### Estes terão este requerimento em sua descrição
+
 > # Documentação de Endpoins da API
 > 1. [Produto](#produto)
 > 2. [Categoria](#categoria)
@@ -71,8 +75,10 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /produtos
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Produto a ser salvo
->> <br />
+>> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Produto criado
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -81,14 +87,18 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA : 204
 >> <br /><br />
+>> Requer autenticação e autoridade de empregado
+>> <br /><br />
 >> 
 >> 
 >> ### Modificar
 >> [ PATCH ]  : /produtos/{id} - inteiro positivo, id do produto a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Produto completo a ser alterado
->> <br />
+>> <br /><br />
 >> RESPOSTA : 200 - Produto
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> [Voltar ao topo](#topo)
 
@@ -124,8 +134,10 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /categorias
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : A Categoria a ser salva
->> <br />
+>> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - A Categoria criada
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -134,14 +146,18 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA : 204
 >> <br /><br />
+>> Requer autenticação e autoridade de empregado
+>> <br /><br />
 >> 
 >> 
 >> ### Modificar
 >> [ PATCH ]  : /categorias/{id} - inteiro positivo, id da categoria a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : A Categoria completo a ser alterado
->> <br />
+>> <br /><br />
 >> RESPOSTA : 200 - Categoria
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> [Voltar ao topo](#topo)
 
@@ -173,8 +189,10 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /estados
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Estado a ser salvo
->> <br />
+>> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Estado criado
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -189,7 +207,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ PATCH ]  : /categorias/{id} - inteiro positivo, id da categoria a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Estado completo a ser alterado
->> <br />
+>> <br /><br />
 >> RESPOSTA : 200 - Estado
 >> <br /><br />
 >> [Voltar ao topo](#topo)
@@ -212,8 +230,10 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /cidades
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : A cidade a ser salva
->> <br />
+>> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - A cidade criada
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -222,14 +242,18 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA : 204
 >> <br /><br />
+>> Requer autenticação e autoridade de empregado
+>> <br /><br />
 >> 
 >> 
 >> ### Modificar
 >> [ PATCH ]  : /cidades/{id} - inteiro positivo, id da cidade a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : A cidade a ser alterado
->> <br />
+>> <br /><br />
 >> RESPOSTA : 200 - Cidade
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> [Voltar ao topo](#topo)
 
@@ -252,8 +276,8 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >>     "cidade": <Cidade>
 >>	}
 >> ```
->> ### Busca por id
->> [ GET ]  : /enderecos/{id} - inteiro positivo
+>> ### Busca por usuario paginada
+>> [ GET ]  : /enderecos/usuario?page=0&size=20&sort=cidade,asc
 >> <br /><br />
 >> RESPOSTA : 200 - Pagina contendo os endereços
 >> <br /><br />
@@ -263,7 +287,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /enderecos
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Endereço a ser salvo
->> <br />
+>> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Endereço criado
 >> <br /><br />
 >> 
@@ -279,7 +303,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ PATCH ]  : /enderecos/{id} - inteiro positivo, id do endereço a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Endereço completo a ser alterado
->> <br />
+>> <br /><br />
 >> RESPOSTA : 200 - Endereço
 >> <br /><br />
 >> [Voltar ao topo](#topo)
@@ -319,7 +343,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /usuarios
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Usuario a ser salvo
->> <br />
+>> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Usuario criado
 >> <br /><br />
 >> 
@@ -342,7 +366,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ PATCH ]  : /usuarios/{id} - inteiro positivo, id da categoria a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Usuario
->> <br />
+>> <br /><br />
 >> RESPOSTA : 200 - Usuario
 >> <br /><br />
 >> [Voltar ao topo](#topo)
@@ -398,7 +422,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /compras
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : A Compra a ser salva
->> <br />
+>> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - A Compra criada
 >> <br /><br />
 >> 
@@ -448,7 +472,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /departamentos
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Departamento a ser salvo
->> <br />
+>> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Departamento
 >> <br /><br />
 >> 
@@ -464,7 +488,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ PATCH ]  : /departamentos/{id} - inteiro positivo, id da categoria a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    :  O Departamento a ser alterado
->> <br />
+>> <br /><br />
 >> RESPOSTA : 200 - Departamento
 >> <br /><br />
 >> [Voltar ao topo](#topo)
@@ -519,7 +543,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ POST ]  : /funcionarios
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Funcionario a ser salvo
->> <br />
+>> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Funcionario
 >> <br /><br />
 >> 
@@ -535,7 +559,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ PATCH ]  : /funcionarios/{id} - inteiro positivo, id da categoria a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Funcionario a ser alterado
->> <br />
+>> <br /><br />
 >> RESPOSTA : 200 - O Funcionario
 >> <br /><br />
 >> [Voltar ao topo](#topo)

@@ -38,8 +38,8 @@ public class ProdutoController {
 
 	@GetMapping
 	public ResponseEntity<Page<ProdutoDTO>> findAllByValorGreaterThanEqualAndValorLessThanEqual(
-			@RequestParam(required = false, defaultValue = "0") Double min,
-			@RequestParam(required = false, defaultValue = LONG_MAX) Double max, Pageable page) {
+			@RequestParam(defaultValue = "0") Double min, @RequestParam(defaultValue = LONG_MAX) Double max,
+			Pageable page) {
 
 		return ResponseEntity.ok(service.findAllByValorGreaterThanEqualAndValorLessThanEqual(min, max, page));
 	}

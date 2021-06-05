@@ -16,12 +16,14 @@ public class UserDetailsImpl implements UserDetails {
 	private String username;
 	private String password;
 	private Boolean active;
+	private Long userId;
 	private final List<SimpleGrantedAuthority> authorities;
 
 	public UserDetailsImpl(Usuario user) {
-		this.username = user.getEmail();
-		this.password = user.getSenha();
-		this.active = user.isAtivo();
+		username = user.getEmail();
+		password = user.getSenha();
+		active = user.isAtivo();
+		setUserId(user.getId());
 		authorities = Arrays.asList(new SimpleGrantedAuthority(user.getAcesso().toString()),
 				new SimpleGrantedAuthority(user.getId().toString()));
 	}
@@ -59,6 +61,14 @@ public class UserDetailsImpl implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return active;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 }

@@ -45,6 +45,19 @@ public class ApiApplication implements CommandLineRunner {
 		root.setTelefones(java.util.Arrays.asList("1234", "5678"));
 		root.setCpf("12345678901");
 
+
+		Usuario user = new Usuario();
+		user.setNome("Lucas");
+		user.setEmail("usr@gmail.com");
+		user.setSenha("password");
+		user.setAcesso(NivelDeAcesso.USUARIO);
+		user.setGenero(Genero.HOMEM);
+		user.setAtivo(true);
+		user.setNascimento(LocalDate.now());
+		user.setTelefones(java.util.Arrays.asList("1234", "5678"));
+		user.setCpf("12345678902");
+
 		repo.save(root);
+		repo.save(user);
 	}
 }

@@ -3,6 +3,7 @@ package com.sigen.api.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,26 +21,37 @@ public class EnderecoService {
 
 	@Transactional(readOnly = true)
 	public Page<EnderecoDTO> findAllByUsuario(Long id, Pageable page) {
-
-		Usuario usuario = new Usuario(id);
-
-		return repository.findAllByUsuario(usuario, page).map(endereco -> new EnderecoDTO(endereco));
+		return repository.findAllByUsuario(new Usuario(id), page).map(endereco -> new EnderecoDTO(endereco));
 	}
 
-	public EnderecoDTO save(Endereco endereco) {
+	public EnderecoDTO save(Endereco endereco, Long idUsuario) {
+		endereco.setUsuario(new Usuario(idUsuario));
+
 		Endereco enderecoSaved = repository.save(endereco);
 		return new EnderecoDTO(repository.findById(enderecoSaved.getId()).orElse(null));
 	}
 
-	public EnderecoDTO patch(Long id, Endereco endereco) {
-		if (!repository.existsById(id))
-			throw new NotFoundException("Endereco não encontrado");
+	public EnderecoDTO patch(Long id, Endereco endereco, Long idUsuario) {
+
+		Endereco original = repository.findById(id).orElseThrow(() -> new NotFoundException("Endereco não encontrado"));
+
+		if (original.getUsuario().getId() != idUsuario)
+			throw new AccessDeniedException("Não autorizado");
+
 		endereco.setId(id);
 		Endereco enderecoSaved = repository.saveAndFlush(endereco);
 		return new EnderecoDTO(repository.findById(enderecoSaved.getId()).orElse(enderecoSaved));
 	}
 
-	public void deleteById(Long id) {
+	public void deleteById(Long id, Long idUsuario) {
+
+		Usuario usuario = new Usuario(idUsuario);
+
+		Endereco original = repository.findById(id).orElseThrow(() -> new NotFoundException("Endereco não encontrado"));
+
+		if (original.getUsuario().getId() != usuario.getId())
+			throw new AccessDeniedException("Não autorizado");
+
 		repository.deleteById(id);
 	}
 }

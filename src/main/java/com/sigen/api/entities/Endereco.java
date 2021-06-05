@@ -53,19 +53,20 @@ public class Endereco {
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_usuario", updatable = false)
+	@JsonProperty(access = Access.READ_ONLY)
 	private Usuario usuario;
 
 	public Endereco(Long id) {
 		this.id = id;
 	}
-	
+
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
 	}
 
 	public void setCep(String cep) {
-		
-		if ( cep.length() != 8 )
+
+		if (cep.length() != 8)
 			throw new IllegalArgumentException("CEP inválido");
 		try {
 			Integer.parseInt(cep);
