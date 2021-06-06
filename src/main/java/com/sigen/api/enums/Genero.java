@@ -1,7 +1,7 @@
 package com.sigen.api.enums;
 
 public enum Genero {
-	HOMEM("HOMEM"), MULHER("MULHER"), OUTRO("OUTRO");
+	MASCULINO("MASCULINO"), FEMININO("FEMININO"), OUTRO("OUTRO");
 	
 	private String genero;
 	

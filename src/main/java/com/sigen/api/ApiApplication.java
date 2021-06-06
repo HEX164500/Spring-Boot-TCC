@@ -13,8 +13,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.sigen.api.entities.Usuario;
-import com.sigen.api.enums.NivelDeAcesso;
 import com.sigen.api.enums.Genero;
+import com.sigen.api.enums.NivelDeAcesso;
 import com.sigen.api.repositories.UsuarioRepository;
 
 @EnableAutoConfiguration(exclude = { ErrorMvcAutoConfiguration.class })
@@ -34,30 +34,21 @@ public class ApiApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Usuario root = new Usuario();
-		root.setNome("Lucas");
-		root.setEmail("lucas@gmail.com");
-		root.setSenha("password");
-		root.setAcesso(NivelDeAcesso.EMPREGADO);
-		root.setGenero(Genero.HOMEM);
-		root.setAtivo(true);
-		root.setNascimento(LocalDate.now());
-		root.setTelefones(java.util.Arrays.asList("1234", "5678"));
-		root.setCpf("12345678901");
+		
+		Usuario root = repo.findByEmail("lucas.rafael.164500@gmail.com").orElse(null);
+		
+		if (root == null) {
+			root = new Usuario();
+			root.setNome("Lucas");
+			root.setEmail("lucas.rafael.164500@gmail.com");
+			root.setSenha("f0258abb81d9be7887e5b4d0732a1bee");
+			root.setAcesso(NivelDeAcesso.EMPREGADO);
+			root.setGenero(Genero.MASCULINO);
+			root.setAtivo(true);
+			root.setNascimento(LocalDate.now());
+			root.setCpf("12345678901");
 
-
-		Usuario user = new Usuario();
-		user.setNome("Lucas");
-		user.setEmail("usr@gmail.com");
-		user.setSenha("password");
-		user.setAcesso(NivelDeAcesso.USUARIO);
-		user.setGenero(Genero.HOMEM);
-		user.setAtivo(true);
-		user.setNascimento(LocalDate.now());
-		user.setTelefones(java.util.Arrays.asList("1234", "5678"));
-		user.setCpf("12345678902");
-
-		repo.save(root);
-		repo.save(user);
+			repo.save(root);
+		}
 	}
 }
