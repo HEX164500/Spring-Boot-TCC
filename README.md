@@ -281,6 +281,8 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA : 200 - Pagina contendo os endereços
 >> <br /><br />
+>> Requer autenticação e autoridade de usuario
+>> <br /><br />
 >> 
 >> 
 >> ### Salvar
@@ -290,12 +292,16 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Endereço criado
 >> <br /><br />
+>> Requer autenticação e autoridade de usuario
+>> <br /><br />
 >> 
 >> 
 >> ### Apagar por id
 >> [ DELETE ]  : /enderecos/{id} - inteiro positivo
 >> <br /><br />
 >> RESPOSTA : 204
+>> <br /><br />
+>> Requer autenticação e autoridade de usuario
 >> <br /><br />
 >> 
 >> 
@@ -305,6 +311,8 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> CORPO DA REQUISIÇÃO    : O Endereço completo a ser alterado
 >> <br /><br />
 >> RESPOSTA : 200 - Endereço
+>> <br /><br />
+>> Requer autenticação e autoridade de usuario
 >> <br /><br />
 >> [Voltar ao topo](#topo)
 
@@ -337,6 +345,8 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA : 200 - Usuario
 >> <br /><br />
+>> Requer estar logado com o alvo da busca e autoridade de empregado
+>> <br /><br />
 >> 
 >> 
 >> ### Salvar
@@ -346,28 +356,18 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Usuario criado
 >> <br /><br />
->> 
->> 
->> ### Desativar usuario por id
->> [ PATCH ]  : /usuarios/desativar/{id} - inteiro positivo
->> <br /><br />
->> RESPOSTA : 204
+>> Enviara um e-mail para ativar a conta após enviado
 >> <br /><br />
 >> 
->> 
->> ### Ativar usuario por id
->> [ PATCH ]  : /usuarios/ativar/{id} - inteiro positivo
->> <br /><br />
->> RESPOSTA : 204
->> <br /><br />
->> 
->> 
+>>  
 >> ### Modificar
 >> [ PATCH ]  : /usuarios/{id} - inteiro positivo, id da categoria a ser alterado
 >> <br /><br />
 >> CORPO DA REQUISIÇÃO    : O Usuario
 >> <br /><br />
 >> RESPOSTA : 200 - Usuario
+>> <br /><br />
+>> Requer estar logado com o alvo da busca e autoridade de empregado
 >> <br /><br />
 >> [Voltar ao topo](#topo)
 
@@ -403,10 +403,12 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >>	}
 >> ```
 >> ### Busca paginada por usuario e estado de pagamento
->> ##### Parametro estado possui default como PENDENTE, e variantes com COMPLETO e CANCELADO
+>> ##### Parametro estado possui default como PENDENTE, e alternativos como COMPLETO e CANCELADO
 >> [ GET ]  : /compras/usuario/{id}?page=0&size=100&sort=nome,desc&estado=PENDENTE
 >> <br /><br />
 >> RESPOSTA : 200 - Pagina contendo as compras
+>> <br /><br />
+>> Requer autenticação e ser o proprietario das compras buscadas ou autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -414,6 +416,8 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> [ GET ]  : /compras/{id} - inteiro positivo
 >> <br /><br />
 >> RESPOSTA : 200 - Compra
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -425,6 +429,8 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - A Compra criada
 >> <br /><br />
+>> Requer autenticação e autoridade de usuario
+>> <br /><br />
 >> 
 >> 
 >> ### Cancelar compra
@@ -432,12 +438,16 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA : 204
 >> <br /><br />
+>> Requer autenticação e autoridade de usuario
+>> <br /><br />
 >> 
 >> 
 >> ### Completar compra
 >> [ PATCH ]  : /compras/completar/{id} - inteiro positivo
 >> <br /><br />
 >> RESPOSTA : 204
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 
 <br /><br /><br /><br />
@@ -459,12 +469,16 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA : 200 - Pagina contendo os departamentos
 >> <br /><br />
+>> Requer autenticação e autoridade de empregado
+>> <br /><br />
 >> 
 >> 
 >> ### Busca por id
 >> [ GET ]  : /departamentos/{id} - inteiro positivo
 >> <br /><br />
 >> RESPOSTA : 200 - Departamento
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -475,12 +489,16 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Departamento
 >> <br /><br />
+>> Requer autenticação e autoridade de empregado
+>> <br /><br />
 >> 
 >> 
 >> ### Apagar por id
 >> [ DELETE ]  : /departamentos/{id} - inteiro positivo
 >> <br /><br />
 >> RESPOSTA : 204
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -490,6 +508,8 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> CORPO DA REQUISIÇÃO    :  O Departamento a ser alterado
 >> <br /><br />
 >> RESPOSTA : 200 - Departamento
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> [Voltar ao topo](#topo)
 
@@ -523,6 +543,8 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA : 200 - Pagina contendo os funcionarios
 >> <br /><br />
+>> Requer autenticação e autoridade de empregado
+>> <br /><br />
 >> 
 >> 
 >> ### Busca por id
@@ -530,12 +552,16 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA : 200 - Funcionario
 >> <br /><br />
+>> Requer autenticação e autoridade de empregado
+>> <br /><br />
 >> 
 >> 
 >> ### Busca por departamento paginado
 >> [ GET ]  : /funcionarios/departamento/{id}?page=0&size=100&sort=nome,desc - inteiro positivo
 >> <br /><br />
 >> RESPOSTA : 200 - Pagina contendo os funcionarios
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -546,12 +572,16 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> RESPOSTA DA SOLICITAÇÃO: 201 - O Funcionario
 >> <br /><br />
+>> Requer autenticação e autoridade de empregado
+>> <br /><br />
 >> 
 >> 
 >> ### Apagar por id
 >> [ DELETE ]  : /funcionarios/{id} - inteiro positivo
 >> <br /><br />
 >> RESPOSTA : 204
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> 
 >> 
@@ -561,5 +591,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> CORPO DA REQUISIÇÃO    : O Funcionario a ser alterado
 >> <br /><br />
 >> RESPOSTA : 200 - O Funcionario
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
 >> <br /><br />
 >> [Voltar ao topo](#topo)

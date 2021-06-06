@@ -44,12 +44,17 @@ public class UsuarioService {
 		return new UsuarioDTO(repository.saveAndFlush(usuario));
 	}
 
-	public void ativarContaPorToken(String data) {
+	public boolean ativarContaPorToken(String data) {
 		TokenUsuario token = TokenBuilder.decode(data);
-		Usuario usuario = repository.findByIdOrCpf(token.getId(), "")
-				.orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
+		Usuario usuario = repository.findByIdOrCpf(token.getId(), "").orElse(null);
+
+		if (usuario == null)
+			return false;
+
 		usuario.setAtivo(true);
 		repository.save(usuario);
+
+		return true;
 	}
 
 	public void alterarSenha(Long id, String nova, String antiga) {
@@ -61,12 +66,12 @@ public class UsuarioService {
 			throw new IllegalArgumentException("Senhas não podem ser iguais");
 
 		Usuario usuario = repository.findById(id).orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
-		
+
 		if (!usuario.getSenha().equals(antiga))
 			throw new IllegalArgumentException("Senha atual invalida");
 
 		usuario.setSenha(nova);
-		
+
 		repository.updateSenhaById(id, usuario.getSenha());
 		repository.save(usuario);
 	}

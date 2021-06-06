@@ -3,6 +3,7 @@ package com.sigen.api.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,8 +41,8 @@ public class CompraService {
 		return repository.findAllByUsuarioAndEstado(usuario, estado, page).map(compra -> new CompraDTO(compra));
 	}
 
-	public CompraDTO save(Compra c, String userEmail) {
-		Usuario usuario = usuarioRepository.findByEmail(userEmail)
+	public CompraDTO save(Compra c, Long idUsuario) {
+		Usuario usuario = usuarioRepository.findById(idUsuario)
 				.orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
 
 		if (c.getItems().size() < 1) {
@@ -69,9 +70,12 @@ public class CompraService {
 		return new CompraDTO(retorno);
 	}
 
-	public void cancelar(Long id) {
+	public void cancelar(Long id, Long idUsuario) {
 		Compra compra = repository.findById(id).orElseThrow(() -> new NotFoundException("Compra não encontrada"));
 
+		if( compra.getUsuario().getId() != idUsuario )
+			throw new AccessDeniedException("Não autorizado");
+			
 		if (compra.getEstado().equals(EstadoPagamento.COMPLETO) || compra.getEstado().equals(EstadoPagamento.CANCELADO))
 			throw new IllegalStateException("Compra já concluida ou cancelada");
 
@@ -84,7 +88,7 @@ public class CompraService {
 
 		if (compra.getEstado().equals(EstadoPagamento.COMPLETO) || compra.getEstado().equals(EstadoPagamento.CANCELADO))
 			throw new IllegalStateException("Compra já concluida ou cancelada");
-		
+
 		compra.completar();
 		repository.saveAndFlush(compra);
 	}

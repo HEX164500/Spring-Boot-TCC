@@ -10,6 +10,7 @@ import com.sigen.api.dto.FuncionarioDTO;
 import com.sigen.api.entities.Departamento;
 import com.sigen.api.entities.Funcionario;
 import com.sigen.api.exceptions.NotFoundException;
+import com.sigen.api.repositories.DepartamentoRepository;
 import com.sigen.api.repositories.FuncionarioRepository;
 
 @Service
@@ -17,6 +18,9 @@ public class FuncionarioService {
 
 	@Autowired
 	private FuncionarioRepository repository;
+
+	@Autowired
+	private DepartamentoRepository departamentoRepository;
 
 	@Transactional(readOnly = true)
 	public FuncionarioDTO findById(Long id) {
@@ -27,6 +31,10 @@ public class FuncionarioService {
 
 	@Transactional(readOnly = true)
 	public Page<FuncionarioDTO> findAllByDepartamento(Long id, Pageable page) {
+
+		if (!departamentoRepository.existsById(id))
+			throw new NotFoundException("Departamento não encontrado");
+
 		Departamento departamento = new Departamento(id);
 		return repository.findAllByDepartamento(departamento, page).map(funcionario -> new FuncionarioDTO(funcionario));
 	}
@@ -50,6 +58,8 @@ public class FuncionarioService {
 	}
 
 	public void deleteById(Long id) {
+		if (!repository.existsById(id))
+			throw new NotFoundException("Funcionario não encontrado");
 		repository.deleteById(id);
 	}
 }

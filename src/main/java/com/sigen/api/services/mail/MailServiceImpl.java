@@ -15,7 +15,7 @@ public class MailServiceImpl implements MailService {
 	@Autowired
 	private JavaMailSender sender;
 
-	private static final String activationUrlBase = "localhost:8080/usuarios/ativar/token/";
+	private static final String activationUrlBase = "http://localhost:8080/usuarios/ativar/token/";
 
 	@Override
 	public void sendActivationToken(Usuario usuario) {

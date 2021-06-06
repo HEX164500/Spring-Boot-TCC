@@ -21,7 +21,7 @@ public class CompraDTO implements Serializable {
 	private Double total;
 	private EstadoPagamento estado;
 	private MetodoPagamento metodo;
-	private String dataPagamento;
+	private String dataPagamento = "null";
 	private EnderecoDTO endereco;
 	private Set<ItemCompraDTO> items;
 
@@ -32,9 +32,10 @@ public class CompraDTO implements Serializable {
 		total = compra.getTotal();
 		estado = compra.getEstado();
 		metodo = compra.getMetodo();
-		dataPagamento = compra.getDataPagamento().toString();
 		endereco = new EnderecoDTO(compra.getEndereco());
 		items = new HashSet<>(
 				compra.getItems().stream().map(item -> new ItemCompraDTO(item)).collect(Collectors.toList()));
+		if(compra.getDataPagamento() != null)
+			dataPagamento = compra.getDataPagamento().toString();
 	}
 }

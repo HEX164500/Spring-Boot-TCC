@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,36 +30,42 @@ public class ExceptionController {
 
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
-		e.printStackTrace();
+
 		return createResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(value = { HttpMessageNotReadableException.class, PropertyValueException.class,
 			QueryException.class })
 	public ResponseEntity<String> handleBadRequest(Exception e) {
-		e.printStackTrace();
+
 		return createResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public ResponseEntity<String> handleNoHandlerFoundException(NoHandlerFoundException e) {
-		e.printStackTrace();
+
 		return createResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler({ ConstraintViolationException.class, DataIntegrityViolationException.class })
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public ResponseEntity<String> handleJdbcSQLIntegrityConstraintViolationException(Exception e) {
-		e.printStackTrace();
+
 		return createResponseMessage("Erro ao processar sua requisição, verifique os dados e tente novamente",
 				HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
+
+		return createResponseMessage(e.getMessage(), HttpStatus.FORBIDDEN);
 	}
 
 	@Order(Ordered.LOWEST_PRECEDENCE)
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleDefaultError(Exception e) {
-		e.printStackTrace();
+
 		return createResponseMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

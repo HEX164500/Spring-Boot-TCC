@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.sigen.api.dto.UsuarioDTO;
 import com.sigen.api.entities.Usuario;
@@ -30,11 +31,8 @@ public class UsuarioController {
 
 	@PreAuthorize("hasAnyAuthority('EMPREGADO', #id, #cpf)")
 	@GetMapping(value = "/search")
-	public ResponseEntity<UsuarioDTO> findByIdOrCpf(@RequestParam(defaultValue = "-1") Long id,
-			@RequestParam(defaultValue = "-1") String cpf) {
-
-		System.out.println(id);
-		System.out.println(cpf);
+	public ResponseEntity<UsuarioDTO> findByIdOrCpf(@RequestParam(defaultValue = "-1", name = "id") Long id,
+			@RequestParam(defaultValue = "-1", name = "cpf") String cpf) {
 
 		if (cpf.equals("-1") && id == -1)
 			throw new IllegalArgumentException("Deve ser fornecido ao menos um parametro para busca");
@@ -46,10 +44,12 @@ public class UsuarioController {
 		return ResponseEntity.ok(service.findByIdOrCpf(id, cpf));
 	}
 
-	@GetMapping(value = "/ativar/token/{token}")
-	public ResponseEntity<UsuarioDTO> ativarContaPorToken(@PathVariable String token) {
-		service.ativarContaPorToken(token);
-		return new ResponseEntity<UsuarioDTO>(HttpStatus.NO_CONTENT);
+	@GetMapping(value = "/ativar/token/{token}", produces = MediaType.TEXT_HTML_VALUE)
+	public ModelAndView ativarContaPorToken(@PathVariable String token) {
+
+		ModelAndView view = new ModelAndView(
+				service.ativarContaPorToken(token) ? "mensagem_conta_ativada" : "mensagem_conta_nao_ativada");
+		return view;
 	}
 
 	@PostMapping
@@ -57,16 +57,15 @@ public class UsuarioController {
 		return new ResponseEntity<UsuarioDTO>(service.save(usuario), HttpStatus.CREATED);
 	}
 
-	@PreAuthorize("hasAuthority('EMPREGADO', #id)")
+	@PreAuthorize("hasAnyAuthority('EMPREGADO', #id)")
 	@PatchMapping(value = "/{id}")
-	public ResponseEntity<UsuarioDTO> patch(@PathVariable Long id, @RequestBody Usuario usuario) {
+	public ResponseEntity<UsuarioDTO> patch(@PathVariable("id") Long id, @RequestBody Usuario usuario) {
 		return ResponseEntity.ok(service.patch(id, usuario));
 	}
 
-	@PreAuthorize("hasAuthority('EMPREGADO', #id)")
 	@PatchMapping(value = "/alterarsenha/{id}")
-	public ResponseEntity<UsuarioDTO> patch(@PathVariable Long id, @RequestBody Map<String, String> corpo) {
-
+	public ResponseEntity<UsuarioDTO> changePassword(@PathVariable("id") Long id, @RequestBody Map<String, String> corpo){
+		
 		String nova = corpo.get("nova");
 		String antiga = corpo.get("antiga");
 
