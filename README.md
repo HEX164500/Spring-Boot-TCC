@@ -323,6 +323,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 > #####  [Voltar ao topo](#topo)
 >> ### Estrutura JSON
 >> ##### Campos marcados com ' * ' são obrigatórios
+>> #### Nota: generos possiveis são MASCULINO, FEMININO E OUTRO
 >> ``` JSON
 >> 	{
 >>		"id": 6,
@@ -330,7 +331,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >>  	"email": "email@email.com", *
 >>  	"cpf": "00011100011", * 
 >>  	"acesso": "USUARIO",
->>  	"genero": "HOMEM",
+>>  	"genero": "MASCULINO",
 >>  	"telefones": [
 >>      	"1234",
 >>      	"5678"
@@ -520,6 +521,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 > #####  [Voltar ao topo](#topo)
 >> ### Estrutura JSON
 >> ##### Campos marcados com ' * ' são obrigatórios
+>> #### Nota: generos possiveis são MASCULINO, FEMININO E OUTRO
 >> ``` JSON
 >>{
 >>  "id": 1,
@@ -527,7 +529,7 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >>  "email": "email@email.com",
 >>  "cpf": "12345678901",
 >>  "acesso": "EMPREGADO",
->>  "genero": "HOMEM",
+>>  "genero": "MASCULINO",
 >>  "telefones": "2021-05-18",
 >>  "ativo": true,
 >>  "registro": "2021-05-18",
