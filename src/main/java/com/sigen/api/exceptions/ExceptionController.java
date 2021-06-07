@@ -30,7 +30,6 @@ public class ExceptionController {
 
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
-
 		return createResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
@@ -52,7 +51,7 @@ public class ExceptionController {
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public ResponseEntity<String> handleJdbcSQLIntegrityConstraintViolationException(Exception e) {
 
-		return createResponseMessage("Erro ao processar sua requisição, verifique os dados e tente novamente",
+		return createResponseMessage(e.getMessage(),
 				HttpStatus.BAD_REQUEST);
 	}
 
@@ -65,7 +64,6 @@ public class ExceptionController {
 	@Order(Ordered.LOWEST_PRECEDENCE)
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleDefaultError(Exception e) {
-
 		return createResponseMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

@@ -49,7 +49,7 @@ public class Usuario {
 	@Column(nullable = false, length = 126, unique = true, updatable = false)
 	private String email;
 
-	@Column(nullable = false, length = 11, unique = true)
+	@Column(nullable = false, length = 11, unique = true, updatable = false)
 	private String cpf;
 
 	@Enumerated(EnumType.STRING)

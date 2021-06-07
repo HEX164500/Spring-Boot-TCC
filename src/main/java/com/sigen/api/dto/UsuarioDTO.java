@@ -17,7 +17,6 @@ public class UsuarioDTO implements Serializable {
 	private Long id;
 	private String nome;
 	private String email;
-	private String cpf;
 	private NivelDeAcesso acesso;
 	private Genero genero;
 	private Set<String> telefones;
@@ -29,7 +28,6 @@ public class UsuarioDTO implements Serializable {
 		id = usuario.getId();
 		nome = usuario.getNome();
 		email = usuario.getEmail();
-		cpf = usuario.getCpf();
 		acesso = usuario.getAcesso();
 		genero = usuario.getGenero();
 		telefones = new HashSet<>(usuario.getTelefones());

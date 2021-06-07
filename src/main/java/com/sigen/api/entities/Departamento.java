@@ -33,7 +33,7 @@ public class Departamento {
 	private String nome;
 
 	@Column(length = 156)
-	private String descricao;
+	private String descricao = "";
 
 	@OneToOne
 	@JoinColumn(name = "id_funcionario")

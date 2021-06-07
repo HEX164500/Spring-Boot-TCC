@@ -2,7 +2,6 @@ package com.sigen.api.dto;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sigen.api.entities.Funcionario;
 
 import lombok.Getter;
@@ -15,7 +14,6 @@ public class FuncionarioDTO extends UsuarioDTO implements Serializable {
 	private Double salario;
 	private String admissao;
 
-	@JsonManagedReference
 	private DepartamentoDTO departamento;
 
 	public FuncionarioDTO(Funcionario funcionario) {
