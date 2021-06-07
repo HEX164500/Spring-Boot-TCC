@@ -46,14 +46,16 @@ public class UsuarioService {
 
 	public boolean ativarContaPorToken(String data) {
 		TokenUsuario token = TokenBuilder.decode(data);
-		Usuario usuario = repository.findByIdOrCpf(token.getId(), "").orElse(null);
 
-		if (usuario == null)
+		Usuario usuario = repository.findById(token.getId()).orElse(null);
+		
+		if( usuario == null )
 			return false;
-
-		usuario.setAtivo(true);
-		repository.save(usuario);
-
+		
+		if( !usuario.getEmail().equals(token.getEmail()) )
+			return false;
+		
+		repository.updateAtivoById(true, token.getId());
 		return true;
 	}
 

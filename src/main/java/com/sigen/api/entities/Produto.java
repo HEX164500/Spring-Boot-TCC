@@ -46,6 +46,7 @@ public class Produto {
 	private Double valor;
 
 	@JsonProperty(access = Access.READ_ONLY)
+	@Column(updatable = false)
 	private LocalDate cadastro = LocalDate.now();
 
 	private Double peso = 0.0;

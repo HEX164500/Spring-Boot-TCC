@@ -49,11 +49,11 @@ public class Usuario {
 	@Column(nullable = false, length = 126, unique = true, updatable = false)
 	private String email;
 
-	@Column(nullable = false, length = 11)
+	@Column(nullable = false, length = 11, unique = true)
 	private String cpf;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	@JsonProperty(access = Access.READ_ONLY)
 	private NivelDeAcesso acesso = NivelDeAcesso.USUARIO;
 
@@ -65,6 +65,7 @@ public class Usuario {
 	private final Set<String> telefones = new HashSet<>();
 
 	@JsonProperty(access = Access.READ_ONLY)
+	@Column(updatable = false)
 	private Boolean ativo = false;
 
 	@Column(updatable = false)
