@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.userDetailsService(detailsService);
 		
 		http.cors().and().csrf().disable();
-		http.headers().frameOptions().sameOrigin();
+		http.headers().frameOptions().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.httpBasic().authenticationEntryPoint(entryPoint);
 		
