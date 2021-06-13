@@ -29,6 +29,7 @@ public class MailSender extends JavaMailSenderImpl {
 
 	@Bean
 	public JavaMailSender getJavaMailSender() {
+		
 		MailSender sender = new MailSender();
 
 		if (host == null || port == null || username == null || password == null || smtpAuth == null
