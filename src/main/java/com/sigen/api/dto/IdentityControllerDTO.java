@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class IdentityControllerDTO {
 
+	private Long userId;
 	private String username;
 	private NivelDeAcesso acesso;
 }

@@ -2,7 +2,7 @@ package com.sigen.api.enums;
 
 public enum NivelDeAcesso {
 
-	USUARIO("USUARIO"), EMPREGADO("EMPREGADO");
+	USUARIO("USUARIO"), EMPREGADO("EMPREGADO"), ANONIMO("ANONIMO");
 
 	private String access;
 

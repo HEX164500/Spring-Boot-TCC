@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sigen.api.authentication.UserDetailsImpl;
 import com.sigen.api.dto.IdentityControllerDTO;
 import com.sigen.api.enums.NivelDeAcesso;
 
@@ -33,6 +34,7 @@ public class DefaultControllers {
 		IdentityControllerDTO idCtl = new IdentityControllerDTO();
 
 		idCtl.setUsername("Não autenticado");
+		idCtl.setAcesso(NivelDeAcesso.ANONIMO);
 
 		if (authContext instanceof AnonymousAuthenticationToken || authContext == null)
 			return new ResponseEntity<IdentityControllerDTO>(idCtl, HttpStatus.FORBIDDEN);
@@ -41,16 +43,20 @@ public class DefaultControllers {
 
 		var permission = authContext.getAuthorities().stream().filter(a -> {
 			return a.getAuthority().equals("EMPREGADO") || a.getAuthority().equals("USUARIO");
-		}).findFirst();
+		}).findFirst().orElse(null);
 
 		try {
 			if (permission != null) {
-				idCtl.setAcesso(NivelDeAcesso.valueOf(permission.get().getAuthority()));
+				idCtl.setAcesso(NivelDeAcesso.valueOf(permission.getAuthority()));
+
+				var userId = ((UserDetailsImpl) authContext.getDetails()).getUserId();
+
+				idCtl.setUserId(userId);
 			} else {
-				idCtl.setAcesso(NivelDeAcesso.USUARIO);
+				idCtl.setAcesso(NivelDeAcesso.ANONIMO);
 			}
 		} catch (Exception e) {
-			idCtl.setAcesso(NivelDeAcesso.USUARIO);
+			idCtl.setAcesso(NivelDeAcesso.ANONIMO);
 		}
 
 		return ResponseEntity.ok(idCtl);
