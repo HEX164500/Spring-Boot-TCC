@@ -45,6 +45,9 @@ public class FuncionarioController {
 
 	@PostMapping
 	public ResponseEntity<FuncionarioDTO> save(@RequestBody Funcionario funcionario) {
+		
+		
+		
 		return new ResponseEntity<FuncionarioDTO>(service.save(funcionario), HttpStatus.CREATED);
 	}
 

@@ -30,40 +30,41 @@ public class ExceptionController {
 
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
+		e.printStackTrace();
 		return createResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(value = { HttpMessageNotReadableException.class, PropertyValueException.class,
 			QueryException.class })
 	public ResponseEntity<String> handleBadRequest(Exception e) {
-
+		e.printStackTrace();
 		return createResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public ResponseEntity<String> handleNoHandlerFoundException(NoHandlerFoundException e) {
-
+		e.printStackTrace();
 		return createResponseMessage(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler({ ConstraintViolationException.class, DataIntegrityViolationException.class })
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	public ResponseEntity<String> handleJdbcSQLIntegrityConstraintViolationException(Exception e) {
-
-		return createResponseMessage(e.getMessage(),
-				HttpStatus.BAD_REQUEST);
+		e.printStackTrace();
+		return createResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
-
+		e.printStackTrace();
 		return createResponseMessage(e.getMessage(), HttpStatus.FORBIDDEN);
 	}
 
 	@Order(Ordered.LOWEST_PRECEDENCE)
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleDefaultError(Exception e) {
+		e.printStackTrace();
 		return createResponseMessage(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

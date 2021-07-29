@@ -44,14 +44,18 @@ public class FuncionarioService {
 		return repository.findAll(page).map(funcionario -> new FuncionarioDTO(funcionario));
 	}
 
-
 	@Transactional
 	public FuncionarioDTO save(Funcionario funcionario) {
+
+		Departamento d = departamentoRepository.findById(funcionario.getDepartamento().getId())
+				.orElseThrow(() -> new NotFoundException("Departamento não encontrado"));
+
+		funcionario.setDepartamento(d);
+		
 		funcionario.configureDefaults();
 		Funcionario f = repository.findById(repository.save(funcionario).getId()).orElse(null);
 		return new FuncionarioDTO(f);
 	}
-
 
 	@Transactional
 	public FuncionarioDTO patch(Long id, Funcionario funcionario) {
@@ -60,7 +64,6 @@ public class FuncionarioService {
 		funcionario.setId(id);
 		return new FuncionarioDTO(repository.saveAndFlush(funcionario));
 	}
-
 
 	@Transactional
 	public void deleteById(Long id) {

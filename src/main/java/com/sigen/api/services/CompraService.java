@@ -41,7 +41,6 @@ public class CompraService {
 		return repository.findAllByUsuarioAndEstado(usuario, estado, page).map(compra -> new CompraDTO(compra));
 	}
 
-
 	@Transactional
 	public CompraDTO save(Compra c, Long idUsuario) {
 		Usuario usuario = usuarioRepository.findById(idUsuario)
@@ -53,14 +52,15 @@ public class CompraService {
 
 		// necessário primeira a compra salva
 		c.setUsuario(usuario);
-		Compra compra = repository.save(c);
+		Compra compra = repository.saveAndFlush(c);
 
 		compra.getItems().forEach(item -> {
 			item.setCompra(compra);
 		});
 
 		// para depois salvar os items
-		itemCompraRepository.saveAll(compra.getItems());
+		compra.getItems().clear();
+		compra.setItems(itemCompraRepository.saveAll(compra.getItems()));
 
 		// recarregamos a entidade e calculamos seu total pois agora seus items estão
 		// presentes
@@ -68,25 +68,23 @@ public class CompraService {
 		retorno.calcularTotal();
 
 		// salvamos a entidade e recarregamos
-		repository.save(retorno);
+		repository.saveAndFlush(retorno);
 		return new CompraDTO(retorno);
 	}
-
 
 	@Transactional
 	public void cancelar(Long id, Long idUsuario) {
 		Compra compra = repository.findById(id).orElseThrow(() -> new NotFoundException("Compra não encontrada"));
 
-		if( compra.getUsuario().getId() != idUsuario )
+		if (compra.getUsuario().getId() != idUsuario)
 			throw new AccessDeniedException("Não autorizado");
-			
+
 		if (compra.getEstado().equals(EstadoPagamento.COMPLETO) || compra.getEstado().equals(EstadoPagamento.CANCELADO))
 			throw new IllegalStateException("Compra já concluida ou cancelada");
 
 		compra.cancelar();
 		repository.saveAndFlush(compra);
 	}
-
 
 	@Transactional
 	public void completar(Long id) {

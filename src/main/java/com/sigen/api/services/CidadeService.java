@@ -18,7 +18,7 @@ public class CidadeService {
 
 	@Transactional
 	public CidadeDTO save(Cidade cidade) {
-		return new CidadeDTO(repository.save(cidade));
+		return new CidadeDTO(repository.saveAndFlush(cidade));
 	}
 
 
