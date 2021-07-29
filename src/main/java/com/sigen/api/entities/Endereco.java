@@ -1,5 +1,6 @@
 package com.sigen.api.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,7 +48,7 @@ public class Endereco {
 	@Column(nullable = false, length = 126, updatable = false)
 	private String bairro;
 
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "id_cidade", updatable = false)
 	private Cidade cidade;
 
