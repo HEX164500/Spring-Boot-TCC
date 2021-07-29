@@ -2,7 +2,6 @@ package com.sigen.api.entities;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -35,7 +34,7 @@ public class Funcionario extends Usuario{
 	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDate admissao = LocalDate.now();
 	
-	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "id_departamento")
 	private Departamento departamento;
 	

@@ -28,6 +28,8 @@ public class UsuarioService {
 		return new UsuarioDTO(usuario);
 	}
 
+
+	@Transactional
 	public UsuarioDTO save(Usuario usuario) {
 
 		Usuario usr = repository.save(usuario);
@@ -37,6 +39,8 @@ public class UsuarioService {
 		return new UsuarioDTO(usr);
 	}
 
+
+	@Transactional
 	public UsuarioDTO patch(Long id, Usuario usuario) {
 		if (!repository.existsById(id))
 			throw new NotFoundException("Usuario não encontrado");
@@ -44,6 +48,8 @@ public class UsuarioService {
 		return new UsuarioDTO(repository.saveAndFlush(usuario));
 	}
 
+
+	@Transactional
 	public boolean ativarContaPorToken(String data) {
 		TokenUsuario token = TokenBuilder.decode(data);
 
@@ -59,6 +65,8 @@ public class UsuarioService {
 		return true;
 	}
 
+
+	@Transactional
 	public void alterarSenha(Long id, String nova, String antiga) {
 
 		if (nova == null || antiga == null)

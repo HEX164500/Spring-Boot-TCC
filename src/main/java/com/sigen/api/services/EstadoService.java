@@ -22,10 +22,14 @@ public class EstadoService {
 		return repository.findAll(page).map(estado -> new EstadoDTO(estado));
 	}
 
+
+	@Transactional
 	public EstadoDTO save(Estado estado) {
 		return new EstadoDTO(repository.save(estado));
 	}
 
+
+	@Transactional
 	public EstadoDTO patch(Long id, Estado estado) {
 		if (!repository.existsById(id))
 			throw new NotFoundException("Estado não encontrado");
@@ -33,6 +37,8 @@ public class EstadoService {
 		return new EstadoDTO(repository.saveAndFlush(estado));
 	}
 
+
+	@Transactional
 	public void deleteById(Long id) {
 		repository.deleteById(id);
 	}

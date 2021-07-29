@@ -29,10 +29,14 @@ public class CategoriaService {
 		return repository.findAll(page).map(categoria -> new CategoriaDTO(categoria));
 	}
 
+
+	@Transactional
 	public CategoriaDTO save(Categoria categoria) {
 		return new CategoriaDTO(repository.save(categoria));
 	}
 
+
+	@Transactional
 	public CategoriaDTO patch(Long id, Categoria categoria) {
 		if (!repository.existsById(id))
 			throw new NotFoundException("Categoria não encontrada");
@@ -40,6 +44,8 @@ public class CategoriaService {
 		return new CategoriaDTO(repository.saveAndFlush(categoria));
 	}
 
+
+	@Transactional
 	public void deleteById(Long id) {
 		repository.deleteById(id);
 	}

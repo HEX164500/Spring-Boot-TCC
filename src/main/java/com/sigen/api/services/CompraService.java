@@ -41,6 +41,8 @@ public class CompraService {
 		return repository.findAllByUsuarioAndEstado(usuario, estado, page).map(compra -> new CompraDTO(compra));
 	}
 
+
+	@Transactional
 	public CompraDTO save(Compra c, Long idUsuario) {
 		Usuario usuario = usuarioRepository.findById(idUsuario)
 				.orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
@@ -70,6 +72,8 @@ public class CompraService {
 		return new CompraDTO(retorno);
 	}
 
+
+	@Transactional
 	public void cancelar(Long id, Long idUsuario) {
 		Compra compra = repository.findById(id).orElseThrow(() -> new NotFoundException("Compra não encontrada"));
 
@@ -83,6 +87,8 @@ public class CompraService {
 		repository.saveAndFlush(compra);
 	}
 
+
+	@Transactional
 	public void completar(Long id) {
 		Compra compra = repository.findById(id).orElseThrow(() -> new NotFoundException("Compra não encontrada"));
 

@@ -24,6 +24,8 @@ public class EnderecoService {
 		return repository.findAllByUsuario(new Usuario(id), page).map(endereco -> new EnderecoDTO(endereco));
 	}
 
+
+	@Transactional
 	public EnderecoDTO save(Endereco endereco, Long idUsuario) {
 		endereco.setUsuario(new Usuario(idUsuario));
 
@@ -31,6 +33,8 @@ public class EnderecoService {
 		return new EnderecoDTO(repository.findById(enderecoSaved.getId()).orElse(null));
 	}
 
+
+	@Transactional
 	public EnderecoDTO patch(Long id, Endereco endereco, Long idUsuario) {
 
 		Endereco original = repository.findById(id).orElseThrow(() -> new NotFoundException("Endereco não encontrado"));
@@ -43,6 +47,8 @@ public class EnderecoService {
 		return new EnderecoDTO(repository.findById(enderecoSaved.getId()).orElse(enderecoSaved));
 	}
 
+
+	@Transactional
 	public void deleteById(Long id, Long idUsuario) {
 
 		Usuario usuario = new Usuario(idUsuario);

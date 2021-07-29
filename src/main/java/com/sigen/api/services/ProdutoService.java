@@ -43,11 +43,15 @@ public class ProdutoService {
 		return repository.findAllByCategorias(categoria, page).map(produto -> new ProdutoDTO(produto));
 	}
 
+
+	@Transactional
 	public ProdutoDTO save(Produto produto) {
 		Produto prod = repository.save(produto);
 		return new ProdutoDTO(repository.findById(prod.getId()).orElse(null));
 	}
 
+
+	@Transactional
 	public ProdutoDTO patch(Long id, Produto produto) {
 		if (!repository.existsById(id))
 			throw new NotFoundException("Produto não encontrado");
@@ -56,6 +60,8 @@ public class ProdutoService {
 		return new ProdutoDTO(repository.findById(prod.getId()).orElse(null));
 	}
 
+
+	@Transactional
 	public void deleteById(Long id) {
 		repository.deleteById(id);
 	}

@@ -44,12 +44,16 @@ public class FuncionarioService {
 		return repository.findAll(page).map(funcionario -> new FuncionarioDTO(funcionario));
 	}
 
+
+	@Transactional
 	public FuncionarioDTO save(Funcionario funcionario) {
 		funcionario.configureDefaults();
 		Funcionario f = repository.findById(repository.save(funcionario).getId()).orElse(null);
 		return new FuncionarioDTO(f);
 	}
 
+
+	@Transactional
 	public FuncionarioDTO patch(Long id, Funcionario funcionario) {
 		if (!repository.existsById(id))
 			throw new NotFoundException("Funcionario não encontrado");
@@ -57,6 +61,8 @@ public class FuncionarioService {
 		return new FuncionarioDTO(repository.saveAndFlush(funcionario));
 	}
 
+
+	@Transactional
 	public void deleteById(Long id) {
 		if (!repository.existsById(id))
 			throw new NotFoundException("Funcionario não encontrado");

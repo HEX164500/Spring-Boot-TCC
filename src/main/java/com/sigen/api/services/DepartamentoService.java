@@ -29,10 +29,14 @@ public class DepartamentoService {
 		return repository.findAll(page).map(departamento -> new DepartamentoDTO(departamento));
 	}
 
+
+	@Transactional
 	public DepartamentoDTO save(Departamento departamento) {
 		return new DepartamentoDTO(repository.save(departamento));
 	}
 
+
+	@Transactional
 	public DepartamentoDTO patch(Long id, Departamento departamento) {
 		if (!repository.existsById(id))
 			throw new NotFoundException("Departamento não encontrado");
@@ -40,6 +44,8 @@ public class DepartamentoService {
 		return new DepartamentoDTO(repository.saveAndFlush(departamento));
 	}
 
+
+	@Transactional
 	public void deleteById(Long id) {
 		repository.deleteById(id);
 	}
