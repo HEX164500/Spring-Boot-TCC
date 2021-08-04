@@ -1,7 +1,5 @@
 package com.sigen.api.services;
 
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -73,11 +71,11 @@ public class CompraService {
 		c.setEndereco(e);
 		// necessário primeira a compra salva
 		c.setUsuario(usuario);
-
-		// carrega no contexto de persistencia os produtos para evitar erros
-		produtoRepo.findAllById(c.getItems().stream().map(item -> {
-			return item.getProduto().getId();
-		}).collect(Collectors.toList()));
+		
+		c.getItems().forEach(item -> {
+			var produto = produtoRepo.findById(item.getProduto().getId()).orElse(null);
+			item.setProduto(produto);
+		});
 
 		Compra compra = repository.saveAndFlush(c);
 		
