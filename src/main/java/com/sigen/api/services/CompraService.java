@@ -1,5 +1,7 @@
 package com.sigen.api.services;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,11 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sigen.api.dto.CompraDTO;
 import com.sigen.api.entities.Compra;
+import com.sigen.api.entities.Endereco;
 import com.sigen.api.entities.Usuario;
 import com.sigen.api.enums.EstadoPagamento;
 import com.sigen.api.exceptions.NotFoundException;
 import com.sigen.api.repositories.CompraRepository;
-import com.sigen.api.repositories.ItemCompraRepository;
+import com.sigen.api.repositories.EnderecoRepository;
+import com.sigen.api.repositories.ProdutoRepository;
 import com.sigen.api.repositories.UsuarioRepository;
 
 @Service
@@ -26,7 +30,10 @@ public class CompraService {
 	private UsuarioRepository usuarioRepository;
 
 	@Autowired
-	private ItemCompraRepository itemCompraRepository;
+	private EnderecoRepository enderecoRepo;
+
+	@Autowired
+	private ProdutoRepository produtoRepo;
 
 	@Transactional(readOnly = true)
 	public CompraDTO findById(Long id) {
@@ -50,20 +57,30 @@ public class CompraService {
 			throw new IllegalArgumentException("Uma compra deve conter ao menos 1 produto");
 		}
 
+		if (c.getEndereco() == null) {
+			throw new NotFoundException("Endereço deve ser fornecido na compra");
+		}
+		if (c.getEndereco().getId() == null) {
+			throw new NotFoundException("Endereço deve ser fornecido na compra e deve ter um ID");
+		}
+
+		Endereco e = enderecoRepo.findById(c.getEndereco().getId()).orElse(null);
+
+		if (e == null) {
+			throw new NotFoundException("Endereço não pode ser encontrado");
+		}
+
+		c.setEndereco(e);
 		// necessário primeira a compra salva
 		c.setUsuario(usuario);
+
+		// carrega no contexto de persistencia os produtos para evitar erros
+		produtoRepo.findAllById(c.getItems().stream().map(item -> {
+			return item.getProduto().getId();
+		}).collect(Collectors.toList()));
+
 		Compra compra = repository.saveAndFlush(c);
-
-		compra.getItems().forEach(item -> {
-			item.setCompra(compra);
-		});
-
-		// para depois salvar os items
-		compra.getItems().clear();
-		compra.setItems(itemCompraRepository.saveAll(compra.getItems()));
-
-		// recarregamos a entidade e calculamos seu total pois agora seus items estão
-		// presentes
+		
 		Compra retorno = repository.findById(compra.getId()).orElse(null);
 		retorno.calcularTotal();
 
