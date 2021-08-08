@@ -18,6 +18,7 @@ import com.sigen.api.enums.EstadoPagamento;
 import com.sigen.api.exceptions.NotFoundException;
 import com.sigen.api.repositories.CompraRepository;
 import com.sigen.api.repositories.EnderecoRepository;
+import com.sigen.api.repositories.ItemCompraRepository;
 import com.sigen.api.repositories.ProdutoRepository;
 import com.sigen.api.repositories.UsuarioRepository;
 
@@ -35,6 +36,9 @@ public class CompraService {
 
 	@Autowired
 	private ProdutoRepository produtoRepo;
+	
+	@Autowired
+	private ItemCompraRepository itensRepo;
 
 	@Transactional(readOnly = true)
 	public CompraDTO findById(Long id) {
@@ -87,7 +91,7 @@ public class CompraService {
 
 		c.getItems().clear(); // itens ainda estão incompletos, deve salvar sem eles
 
-		Compra compra = repository.save(c);
+		Compra compra = repository.findById(repository.save(c).getId()).orElse(null);
 
 		itens.forEach(item -> {
 			var produto = produtoRepo.findById(item.getProduto().getId()).orElseThrow(
@@ -96,9 +100,10 @@ public class CompraService {
 			item.setCompra(compra);
 			compra.getItems();
 		});
-
-		compra.getItems().addAll(itens);
+		
+		compra.getItems().addAll(itensRepo.saveAll(itens));
 		compra.calcularTotal();
+		
 		var c2 = repository.saveAndFlush(compra);
 
 		Compra retorno = repository.findById(c2.getId()).orElse(null);

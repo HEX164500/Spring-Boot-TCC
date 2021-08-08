@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -66,7 +65,7 @@ public class Compra {
 	@JoinColumn(name = "id_endereco", updatable = false)
 	private Endereco endereco;
 
-	@OneToMany(mappedBy = "compra", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "compra", fetch = FetchType.EAGER)
 	private final List<ItemCompra> items = new ArrayList<>();
 
 	public Compra(Long id) {
