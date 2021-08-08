@@ -1,5 +1,7 @@
 package com.sigen.api.services;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sigen.api.dto.CompraDTO;
 import com.sigen.api.entities.Compra;
 import com.sigen.api.entities.Endereco;
+import com.sigen.api.entities.ItemCompra;
 import com.sigen.api.entities.Usuario;
 import com.sigen.api.enums.EstadoPagamento;
 import com.sigen.api.exceptions.NotFoundException;
@@ -46,6 +49,13 @@ public class CompraService {
 		return repository.findAllByUsuarioAndEstado(usuario, estado, page).map(compra -> new CompraDTO(compra));
 	}
 
+	/**
+	 * Sim, eu sei que esta uma merda mais estou sem tempo -> toDo
+	 * 
+	 * @param c
+	 * @param idUsuario
+	 * @return
+	 */
 	@Transactional
 	public CompraDTO save(Compra c, Long idUsuario) {
 		Usuario usuario = usuarioRepository.findById(idUsuario)
@@ -62,7 +72,8 @@ public class CompraService {
 			throw new NotFoundException("Endereço deve ser fornecido na compra e deve ter um ID");
 		}
 
-		Endereco e = enderecoRepo.findById(c.getEndereco().getId()).orElse(null);
+		Endereco e = enderecoRepo.findById(c.getEndereco().getId())
+				.orElseThrow(() -> new NotFoundException("Endereço especificado não pode ser encontrado"));
 
 		if (e == null) {
 			throw new NotFoundException("Endereço não pode ser encontrado");
@@ -71,19 +82,27 @@ public class CompraService {
 		c.setEndereco(e);
 		// necessário primeira a compra salva
 		c.setUsuario(usuario);
-		
-		c.getItems().forEach(item -> {
-			var produto = produtoRepo.findById(item.getProduto().getId()).orElse(null);
+
+		ArrayList<ItemCompra> itens = new ArrayList<>(c.getItems());
+
+		c.getItems().clear(); // itens ainda estão incompletos, deve salvar sem eles
+
+		Compra compra = repository.save(c);
+
+		itens.forEach(item -> {
+			var produto = produtoRepo.findById(item.getProduto().getId()).orElseThrow(
+					() -> new NotFoundException("Um dos itens da compra possui um produto inexiste no sistema"));
 			item.setProduto(produto);
+			item.setCompra(compra);
+			compra.getItems();
 		});
 
-		Compra compra = repository.saveAndFlush(c);
-		
-		Compra retorno = repository.findById(compra.getId()).orElse(null);
-		retorno.calcularTotal();
+		compra.getItems().addAll(itens);
+		compra.calcularTotal();
+		var c2 = repository.saveAndFlush(compra);
 
-		// salvamos a entidade e recarregamos
-		repository.saveAndFlush(retorno);
+		Compra retorno = repository.findById(c2.getId()).orElse(null);
+
 		return new CompraDTO(retorno);
 	}
 

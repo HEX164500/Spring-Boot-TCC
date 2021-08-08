@@ -34,7 +34,6 @@ public class Produto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
 
 	@Column(nullable = false)

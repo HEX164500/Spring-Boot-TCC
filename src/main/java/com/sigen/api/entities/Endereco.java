@@ -26,7 +26,6 @@ public class Endereco {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty(access = Access.READ_ONLY)
 	@EqualsAndHashCode.Include
 	private Long id;
 

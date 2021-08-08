@@ -32,6 +32,7 @@ public class UsuarioService {
 	@Transactional
 	public UsuarioDTO save(Usuario usuario) {
 
+		usuario.setId(null);
 		Usuario usr = repository.save(usuario);
 
 		mailService.sendActivationToken(usr);

@@ -46,6 +46,7 @@ public class ProdutoService {
 
 	@Transactional
 	public ProdutoDTO save(Produto produto) {
+		produto.setId(null);
 		Produto prod = repository.save(produto);
 		return new ProdutoDTO(repository.findById(prod.getId()).orElse(null));
 	}

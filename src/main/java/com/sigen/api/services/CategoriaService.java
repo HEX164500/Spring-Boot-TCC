@@ -32,6 +32,7 @@ public class CategoriaService {
 
 	@Transactional
 	public CategoriaDTO save(Categoria categoria) {
+		categoria.setId(null);
 		return new CategoriaDTO(repository.save(categoria));
 	}
 

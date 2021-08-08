@@ -25,6 +25,7 @@ public class EstadoService {
 
 	@Transactional
 	public EstadoDTO save(Estado estado) {
+		estado.setId(null);
 		return new EstadoDTO(repository.save(estado));
 	}
 

@@ -47,6 +47,7 @@ public class FuncionarioService {
 	@Transactional
 	public FuncionarioDTO save(Funcionario funcionario) {
 
+		funcionario.setId(null);
 		Departamento d = departamentoRepository.findById(funcionario.getDepartamento().getId())
 				.orElseThrow(() -> new NotFoundException("Departamento não encontrado"));
 

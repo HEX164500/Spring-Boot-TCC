@@ -37,7 +37,6 @@ public class Compra {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)

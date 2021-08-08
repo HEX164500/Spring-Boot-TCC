@@ -36,6 +36,7 @@ public class EnderecoService {
 	@Transactional
 	public EnderecoDTO save(Endereco endereco, Long idUsuario) {
 		
+		endereco.setId(null);
 		Usuario u = usuarioRepository.findById(idUsuario).orElseThrow(() -> new NotFoundException("Usuario não encontrado ao salvar endereço"));
 		
 		endereco.setUsuario(u);

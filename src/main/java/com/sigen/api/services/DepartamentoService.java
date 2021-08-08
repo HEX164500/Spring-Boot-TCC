@@ -32,6 +32,7 @@ public class DepartamentoService {
 
 	@Transactional
 	public DepartamentoDTO save(Departamento departamento) {
+		departamento.setId(null);
 		return new DepartamentoDTO(repository.save(departamento));
 	}
 
