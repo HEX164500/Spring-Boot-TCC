@@ -413,6 +413,16 @@ API Java + Spring Boot com autenticação HTTP Basic para o TCC do Colégio Téc
 >> <br /><br />
 >> 
 >> 
+>> ### Busca paginada por estado de pagamento
+>> ##### Parametro estado possui default como PENDENTE, e alternativos como COMPLETO e CANCELADO
+>> [ GET ]  : /compras/listar?page=0&size=100&sort=nome,desc&estado=PENDENTE
+>> <br /><br />
+>> RESPOSTA : 200 - Pagina contendo as compras
+>> <br /><br />
+>> Requer autenticação e autoridade de empregado
+>> <br /><br />
+>> 
+>> 
 >> ### Busca por id
 >> [ GET ]  : /compras/{id} - inteiro positivo
 >> <br /><br />
