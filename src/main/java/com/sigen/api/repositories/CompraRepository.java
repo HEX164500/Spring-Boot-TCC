@@ -13,4 +13,6 @@ import com.sigen.api.enums.EstadoPagamento;
 public interface CompraRepository extends JpaRepository<Compra, Long> {
 
 	Page<Compra> findAllByUsuarioAndEstado(Usuario usuario, EstadoPagamento estado, Pageable pageable);
+
+	Page<Compra> findAllByEstado(EstadoPagamento estado, Pageable pageable);
 }

@@ -11,7 +11,7 @@ import com.sigen.api.entities.Produto;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
-	Page<Produto> findAllByNomeContainingOrDescricaoContaining(String text, String text2, Pageable pageable);
+	Page<Produto> findAllByNomeContainingIgnoreCaseOrDescricaoContainingIgnoreCase(String text, String text2, Pageable pageable);
 
 	Page<Produto> findAllByValorGreaterThanEqualAndValorLessThanEqual(Double min, Double max, Pageable pageable);
 	

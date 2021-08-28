@@ -32,7 +32,7 @@ public class ProdutoService {
 
 	@Transactional(readOnly = true)
 	public Page<ProdutoDTO> findAllByNomeContainingOrDescricaoContaining(String text, Pageable page) {
-		return repository.findAllByNomeContainingOrDescricaoContaining(text, text, page)
+		return repository.findAllByNomeContainingIgnoreCaseOrDescricaoContainingIgnoreCase(text, text, page)
 				.map(produto -> new ProdutoDTO(produto));
 	}
 

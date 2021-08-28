@@ -36,7 +36,7 @@ public class CompraService {
 
 	@Autowired
 	private ProdutoRepository produtoRepo;
-	
+
 	@Autowired
 	private ItemCompraRepository itensRepo;
 
@@ -51,6 +51,11 @@ public class CompraService {
 		Usuario usuario = new Usuario();
 		usuario.setId(idUsuario);
 		return repository.findAllByUsuarioAndEstado(usuario, estado, page).map(compra -> new CompraDTO(compra));
+	}
+
+	@Transactional(readOnly = true)
+	public Page<CompraDTO> findAllByEstado(EstadoPagamento estado, Pageable page) {
+		return repository.findAllByEstado(estado, page).map(compra -> new CompraDTO(compra));
 	}
 
 	/**
@@ -100,10 +105,10 @@ public class CompraService {
 			item.setCompra(compra);
 			compra.getItems();
 		});
-		
+
 		compra.getItems().addAll(itensRepo.saveAll(itens));
 		compra.calcularTotal();
-		
+
 		var c2 = repository.saveAndFlush(compra);
 
 		Compra retorno = repository.findById(c2.getId()).orElse(null);

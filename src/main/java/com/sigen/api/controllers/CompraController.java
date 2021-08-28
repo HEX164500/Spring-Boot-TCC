@@ -48,6 +48,13 @@ public class CompraController {
 		return ResponseEntity.ok(service.findAllByUsuarioAndEstado(id, estado, page));
 	}
 
+	@PreAuthorize("hasAnyAuthority('EMPREGADO')")
+	@GetMapping(value = "/listar")
+	public ResponseEntity<Page<CompraDTO>> findAllEstado(
+			@RequestParam(defaultValue = "PENDENTE") EstadoPagamento estado, Pageable page) {
+		return ResponseEntity.ok(service.findAllByEstado(estado, page));
+	}
+
 	@PostMapping
 	public ResponseEntity<CompraDTO> save(@RequestBody Compra compra, Authentication userContext) {
 
@@ -59,7 +66,7 @@ public class CompraController {
 	@PatchMapping(value = "/cancelar/{id}")
 	public ResponseEntity<CompraDTO> cancelar(@PathVariable Long id, Authentication userContext) {
 		Long idUsuario = getUserIdFromAuthentication(userContext);
-		
+
 		service.cancelar(id, idUsuario);
 		return ResponseEntity.ok(null);
 	}
